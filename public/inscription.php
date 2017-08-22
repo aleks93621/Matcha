@@ -3,12 +3,18 @@ require_once('../config/setup.php');
 require_once('./classes/form.php');
 
 $form = new Form($_POST, 5);
-if ($form->getEmpty($_POST) === $form->nbr) {
-  $tab_post = $form->htmlSpecialChar();
-   
-}
-else {
-  echo 'Tous les champs doivent être remplis !';
+
+if (isset($_POST['envoyer'])) {
+    if ($form->getEmpty($_POST) === $form->nbr) {
+        $tab_post = $form->htmlSpecialChar();
+        if ($form->checkMail($tab_post['nom']) === 1) {
+
+        } else {
+            echo 'Adresse mail invalide !'; /* @Erreur à faire   */
+        }
+    } else {
+        echo 'Tous les champs doivent être remplis !';   /* @Erreur à faire */
+    }
 }
 ?>
 <html>
@@ -23,7 +29,7 @@ else {
       echo $form->input('mail', 'Adresse mail', 'text', '0');
       echo $form->input('nom_utilisateur', 'Nom d\'utilisateur', 'text', '0');
       echo $form->input('mdp', 'Mot de passe', 'password', '0');
-      echo $form->submit('S\'inscrire');
+      echo $form->submit('S\'inscrire', 'envoyer');
     ?>
   </form>
 </body>
