@@ -1,0 +1,316 @@
+<html lang="fr">
+<head>
+    <title>Petit thème</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/form.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+</head>
+<body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">ACCUEIL
+                        <span class="glyphicon glyphicon-globe"></span>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">
+                            Mon profil
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a></li>
+                        <li><a href="#">
+                            Mon compte
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </a></li>
+                        <li><a href="#">
+                            Deconnexion
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1>Inscription ou connexion</h1>
+                            <div class="description">
+                                <p>
+                                    Si vous possédez déjà un compte Matcha connectez vous sinon, inscrivez vous!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-box">
+                                <div class="form-top">
+                                    <div class="form-top-left">
+                                        <h3>Si vous avez déjà un compte</h3>
+                                        <p>Connectez vous ici:</p>
+                                    </div>
+                                    <div class="form-top-right">
+                                        <i class="fa fa-lock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-bottom">
+                                <form role="form" action="post_connexion" class="login-form" method="post" id="connection_form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="pseudo1">Pseudo</label>
+                                        <div class="inner-addon right-addon">
+                                            <input type="text" name="pseudo1" placeholder="Pseudo" class="form-username form-control" id="pseudo1">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="mdp11">Mot de passe</label>
+                                        <div class="inner-addon right-addon">
+                                            <input type="password" name="mdp11" placeholder="•••••••••••" class="form-password form-control" id="mdp11">
+                                            <i class="glyphicon glyphicon-lock"></i>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn" id="submit_connect">Connexion</button>
+                                    <span id="err_connec" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Mot de passe ou pseudo incorrect.</strong></span>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1 middle-border"></div>
+                        <div class="col-sm-1"></div>
+
+                        <div class="col-sm-5">
+
+                            <div class="form-box">
+                                <div class="form-top">
+                                    <div class="form-top-left">
+                                        <h3>Si vous n'avez pas de compte</h3>
+                                        <p>Inscrivez vous ici:</p>
+                                    </div>
+                                    <div class="form-top-right">
+                                        <i class="fa fa-pencil"></i>
+                                    </div>
+                                </div>
+                                <div class="form-bottom">
+                                    <form role="form" action="post_inscription" method="post" class="registration-form">
+                                        <!-- PSEUDO -->
+                                        <div class="form-group">
+                                            <label class="sr-only" for="pseudo">Pseudo</label>
+                                            <input type="text" name="pseudo" placeholder="Pseudo" class="form-first-name form-control" id="pseudo">
+                                        </div>
+                                        <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères</strong></span>
+
+                                        <!-- PRENOM -->
+                                        <div class="form-group">
+                                            <label class="sr-only" for="prenom">Prénom</label>
+                                            <input type="text" name="prenom" placeholder="Prénom" class="form-last-name form-control" id="prenom">
+                                        </div>
+                                        <!-- NOM -->
+                                        <div class="form-group">
+                                            <label class="sr-only" for="nom">Nom</label>
+                                            <input type="text" name="nom" placeholder="Nom" class="form-email form-control" id="nom">
+                                        </div>
+                                        <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères</strong></span>
+                                        <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères</strong></span>
+
+                                        <!-- MAIL -->
+                                        <div class="form-group">
+                                            <label class="sr-only" for="email">Email</label>
+                                            <input type="text" name="email" placeholder="Email" class="form-email form-control" id="email">
+                                        </div>
+                                        <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Format mail non valide</strong></span>
+                                        <!-- PASS -->
+                                        <div class="form-group">
+                                            <label class="sr-only" for="password">Mot de passe 1</label>
+                                            <input type="password" name="password" placeholder="•••••••••••" class="form-email form-control" id="password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="password2">Mot de passe 2</label>
+                                            <input type="password" name="password2" placeholder="•••••••••••" class="form-email form-control" id="password2">
+                                        </div>
+                                        <span id="err_password" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Choisissez un mot de passe plus sûr</strong></span>
+                                        <span id="err_password2" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Les mots de passe ne correspondent pas</strong></span>
+
+                                        <button type="submit" id="submit" class="btn">S'inscrire</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="footer-border">
+                        <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                            problème technique.</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+
+            $('#submit_connect').on('click', function(){
+                var pseudo = $('#pseudo1').val();
+                var password = $('#mdp11').val();
+
+                socket.emit('mdp_pseudo_connect', {
+                    pseudo: pseudo,
+                    mdp: password
+                });
+                return false;
+            });
+
+            socket.on("connection_verification", function(rep) {
+                var pseudo = $('#pseudo1').val();
+                if ((tester = rep.localeCompare("oui")) == 0) {
+                    $('#err_connec').attr('style', 'display: none;');
+                    $.post('/post_connexion/', {pseudo: pseudo}, function(returnedData){
+                       console.log(returnedData);
+                    });
+                    document.location.href="/";
+                } else {
+                    $('#err_connec').attr('style', '');
+                }
+            });
+        </script>
+        <script>
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+            function validatePw(pw) {
+                var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+                return re.test(pw);
+            }
+
+            $('#submit').on('click', function() {
+                var pseudo = $('#pseudo').val();
+                var prenom = $('#prenom').val();
+                var nom = $('#nom').val();
+                var email = $('#email').val();
+                var password = $('#password').val();
+                var password2 = $('#password2').val();
+
+                if (pseudo && pseudo.length > 4 && pseudo.length < 255
+                    && prenom && prenom.length > 2 && prenom.length < 255
+                    && nom && nom.length > 2 && nom.length < 255
+                    && email && validateEmail(email)
+                    && password && validatePw(password)
+                    && password2 && password2 == password) {
+                    return;
+                }
+                else {
+                    $('#pseudo').trigger('blur');
+                    $('#prenom').trigger('blur');
+                    $('#nom').trigger('blur');
+                    $('#email').trigger('blur');
+                    $('#password2').trigger('blur');
+                    $('#password').trigger('blur');
+                    return false;
+                }
+            });
+
+            $('#pseudo').on('blur', function() {
+                var pseudo = $('#pseudo').val();
+                if (pseudo && pseudo.length > 4 && pseudo.length < 255) {
+                    $('#pseudo').attr('style', 'border: 1.5px solid green;');
+                    $('#err_pseudo').attr('style', 'display: none;');
+                }
+                else if (pseudo.length > 0) {
+                    $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                    $('#err_pseudo').attr('style', '');
+                }
+            });
+
+            $('#prenom').on('blur', function() {
+                var prenom = $('#prenom').val();
+                if (prenom && prenom.length > 2 && prenom.length < 255) {
+                    $('#prenom').attr('style', 'border: 1.5px solid green;');
+                    $('#err_prenom').attr('style', 'display: none;');
+                }
+                else if (prenom.length > 0) {
+                    $('#prenom').attr('style', 'border: 1.5px solid red;');
+                    $('#err_prenom').attr('style', '');
+                }
+            });
+            $('#nom').on('blur', function() {
+                var nom = $('#nom').val();
+                if (nom && nom.length > 2 && nom.length < 255) {
+                    $('#nom').attr('style', 'border: 1.5px solid green;');
+                    $('#err_nom').attr('style', 'display: none;');
+                }
+                else if (nom.length > 0) {
+                    $('#nom').attr('style', 'border: 1.5px solid red;');
+                    $('#err_nom').attr('style', '');
+                }
+            });
+            $('#email').on('blur', function() {
+                var email = $('#email').val();
+                if (email && validateEmail(email)) {
+                    $('#email').attr('style', 'border: 1.5px solid green;');
+                    $('#err_email').attr('style', 'display: none;');
+                }
+                else if (email.length > 0) {
+                    $('#email').attr('style', 'border: 1.5px solid red;');
+                    $('#err_email').attr('style', '');
+                }
+            });
+            $('#password').on('blur', function() {
+                var password = $('#password').val();
+                if (password && validatePw(password)) {
+                    $('#password').attr('style', 'border: 1.5px solid green;');
+                    $('#err_password').attr('style', 'display: none;');
+                }
+                else if (password.length > 0) {
+                    $('#password').attr('style', 'border: 1.5px solid red;');
+                    $('#password2').attr('style', 'border: 1.5px solid red;');
+                    $('#err_password').attr('style', '');
+                }
+            });
+            $('#password2').on('blur', function() {
+                var password = $('#password').val();
+                var password2 = $('#password2').val();
+                if (password2 && password2 == password) {
+                    $('#password2').attr('style', 'border: 1.5px solid green;');
+                    $('#err_password2').attr('style', 'display: none;');
+                }
+                else if (password2.length > 0) {
+                    $('#password2').attr('style', 'border: 1.5px solid red;');
+                    $('#err_password2').attr('style', '');
+                }
+            });
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+</body>
+</html>
