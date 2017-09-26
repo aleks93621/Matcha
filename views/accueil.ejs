@@ -28,17 +28,17 @@
             <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">
-                        Mon profil
-                        <span class="glyphicon glyphicon-user"></span>
-                    </a></li>
+                            Mon profil
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a></li>
                     <li><a href="#">
-                        Mon compte
-                        <span class="glyphicon glyphicon-wrench"></span>
-                    </a></li>
-                    <li><a href="#">
-                        Deconnexion
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a></li>
+                            Mon compte
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </a></li>
+                    <li><a href="/deconnexion">
+                            Deconnexion
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                        </a></li>
                 </ul>
             </div>
         </div>
@@ -95,4 +95,8 @@
         </div>
     </footer>
     </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8080');
+    </script>
 </html>

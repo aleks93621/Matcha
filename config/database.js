@@ -4,21 +4,17 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  port: "3307"
+  port: "3306"
 });
 
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
-
   con.query("CREATE DATABASE IF NOT EXISTS matcha", function (err, result) {
     if (err) throw err;
-    console.log("Database created");
   });
 
   con.query("use matcha", function (err, result) {
     if (err) throw err;
-    console.log("using db matcha");
   });
 
   con.query("CREATE TABLE IF NOT EXISTS users("+
@@ -32,13 +28,13 @@ con.connect(function(err) {
       "orientation_sexuelle enum('bisexuel', 'heterosexuel', 'homosexuel') NOT NULL DEFAULT 'bisexuel'," +
       "bio VARCHAR(255) DEFAULT NULL," +
       "liste_interet VARCHAR(255) DEFAULT NULL," +
+      "actif tinyint(1) DEFAULT 0," +
       "img_1 VARCHAR(255) DEFAULT NULL," +
       "img_2 VARCHAR(255) DEFAULT NULL," +
       "img_3 VARCHAR(255) DEFAULT NULL," +
       "img_4 VARCHAR(255) DEFAULT NULL," +
       "img_5 VARCHAR(255) DEFAULT NULL)", function (err, result) {
     if (err) throw err;
-    console.log("Table users created");
   });
 
 });

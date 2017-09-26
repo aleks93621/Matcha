@@ -1,5 +1,9 @@
 var express = require('express');
-var session = require('express-session');
+var session = require('express-session')({
+    secret: 'ssshhhhh',
+    resave: true,
+    saveUninitialized: true
+});
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var con = mysql.createConnection({
@@ -10,29 +14,39 @@ var con = mysql.createConnection({
 });
 var ent = require('ent');
 var app = express();
+var db = require('./config/database');
 var path    = require("path");
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
+var sharedsession = require("express-socket.io-session");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
-app.use(session({
-    secret: 'ssshhhhh',
-    resave: true,
-    saveUninitialized: true
-}));
+app.use(session);
+io.use(sharedsession(session));
 
 app.get('/', function(req, res) {
-    if(!req.session.login) {
-        req.session.login = "";
-    } else if (req.session.login) {
-        console.log(req.session.login + " " + req.session.email);
-    }
     res.render('accueil.ejs');
 });
 
 app.get('/connexion/', function(req, res) {
     res.render('inscription.ejs');
+});
+
+app.get('/inscription/', function(req, res) {
+    res.render('inscription.ejs');
+});
+
+app.get('/deconnexion/', function(req, res) {
+    if (req.session.login) {
+        con.query("UPDATE users set actif=0 WHERE pseudo = ?", req.session.login, function (err, resultat) {
+            if (err) throw err;
+        });
+        req.session.email = "";
+        req.session.login = "";
+        req.session.idUser = "";
+    }
+    res.redirect('back');
 });
 
 app.post('/post_inscription/', function(req, res) {
@@ -44,14 +58,13 @@ app.post('/post_inscription/', function(req, res) {
 
     con.connect(function(err) {
       if (err) throw err;
-      console.log("Connected!");
       con.query("use matcha", function (err, result) {
         if (err) throw err;
-        console.log("using db matcha");
       });
       con.query("INSERT INTO users (nom, prenom, pseudo, email, password) VALUES ('"+nom+"','"+prenom+"','"+pseudo+"','"+email+"','"+password+"')", function (err, result) {
         if (err) throw err;
-        console.log("users created");
+        console.log("--------------------------------");
+        console.log("Ton compte a été crée " + pseudo);
       });
     });
     return res.redirect('/');
@@ -64,6 +77,7 @@ function getStats(pseudo, cb) {
     });
 }
 
+
 app.post('/post_connexion/', function(req, res) {
     var pseudo = ent.encode(req.body.pseudo);
     var data;
@@ -72,13 +86,20 @@ app.post('/post_connexion/', function(req, res) {
         if (err) throw err;
     });
 
+    con.query("UPDATE users set actif=1 WHERE pseudo = ?", pseudo, function(err, resultat){
+       if (err) throw err;
+    });
+
     getStats(pseudo, function(result){
         data = result;
         req.session.email = data[0].email;
         req.session.login = pseudo;
+        req.session.idUser = data[0].id;
         res.redirect('/');
     });
 });
+
+
 
 app.get('/compte/', function(req, res) {
     res.render('compte.ejs');
@@ -86,6 +107,11 @@ app.get('/compte/', function(req, res) {
 
 io.sockets.on('connection', function(socket){
 
+    if(socket.handshake.session.login) {
+        con.query("UPDATE users set actif=1 WHERE pseudo = ?", socket.handshake.session.login, function(err, resultat){
+            if (err) throw err;
+        });
+    }
     socket.on("mdp_pseudo_connect", function(data){
         var pseudo = ent.encode(data.pseudo);
         var password = ent.encode(data.mdp);
@@ -106,6 +132,15 @@ io.sockets.on('connection', function(socket){
                 socket.emit("connection_verification", "non");
             }
         });
+    });
+
+    socket.on('disconnect', function () {
+        if(socket.handshake.session.login) {
+            con.query("UPDATE users set actif=0 WHERE pseudo = ?", socket.handshake.session.login, function (err, resultat) {
+                if (err) throw err;
+            });
+            socket.emit('disconnected');
+        }
     });
 });
 
