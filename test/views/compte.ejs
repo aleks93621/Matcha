@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <title>Petit thème</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet">
+        <link href="../css/form.css" rel="stylesheet">
+        <link href="../css/compte.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    </head>
+
+    <body>
+
+<!-- NAVBAR -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">ACCUEIL
+                        <span class="glyphicon glyphicon-globe"></span>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if(pseudo) { %>
+                        <li>Bienvenue <%pseudo%></li>
+                        <li><a href="#">
+                                Mon profil
+                                <span class="glyphicon glyphicon-user"></span>
+                            </a></li>
+                        <li><a href="#">
+                                Mon compte
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            </a></li>
+                        <li><a href="/deconnexion">
+                                Deconnexion
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                            </a></li>
+                        <% } else { %>
+                        <li><a href="/connexion">
+                                S'inscrire / Se connecter
+                                <span class="glyphicon glyphicon-user"></span>
+                            </a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+<!-- ____________________________ -->
+
+<!-- HAUT DE LA DIV:"MON COMPTE" -->
+        <div class="container div-top">
+          <h1>Mon <strong>Compte</strong></h1>
+          <p>Cette page sert à apporter des <strong>modifications</strong>
+             ou bien des <strong>informations</strong> à votre profil.</p>
+        </div>
+<!-- ____________________________ -->
+
+
+<!-- ----------------- 1ère PARTIE DES INFOS : SEXE ET ORIENTATION SEXUELLE ------------------------>
+            <div class="container">
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                          <div class="texte-boite-sexe">
+                              <h1>Sexe</h1>
+                              <p>Sélectionnez votre sexe:</p>
+                          </div>
+                          <div class="form-top-right">
+                              <i class="fa fa-venus-mars"></i>
+                          </div>
+                        </div>
+
+                        <div class="form-bot">
+                            <select class="form-control">
+                                <option value="sexe_neutre" style="display: none;" selected>Choisissez...</option>
+                                <option value="sexe_homme">Homme</option>
+                                <option value="sexe_femme">Femme</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1 middle-border-compte"></div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Orientation sexuelle</h1>
+                                <p>Sélectionnez votre orientation sexuelle, si rien n'est selectionné
+                                    , vous serez considéré comme bisexuel:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa fa-heart"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot">
+                                <select class="form-control">
+                                    <option value="orientation_bisexuel" selected>Choisissez...</option>
+                                    <option value="orientation_homme">Homme</option>
+                                    <option value="orientation_femme">Femme</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+<!-- ____________________________________________________________________________________________________________ -->
+
+<!-- ----------------- LIGNE SEPARATRICE ------------------------>
+                <div class="row">
+                    <div class="col-sm-1 mid-border-compte"></div>
+                </div>
+<!-- _______________________________________________________ -->
+
+
+<!-- ----------------- 2ème PARTIE DES INFOS : BIO ET LISTE D INTERETS ------------------------>
+
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Bio</h1>
+                                <p>Faites une description de vous:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-book"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot" style="height: 150px;">
+                            <textarea style="height: 100px;" class="form-control bio_input" placeholder="Description de vous"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1 middle-border-compte"></div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Liste d'intérêts</h1>
+                                <p>Vos listes d'intérêts(sans virgule, avec espace): exemple (#bio #geek #piercing etc ...)</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-list"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot" style="height: 150px;">
+                            <textarea style="height: 100px;" class="form-control bio_input" placeholder="Liste d'intérêts"></textarea>
+                        </div>
+                    </div>
+                </div>
+<!-- ____________________________________________________________________________________________________________ -->
+
+<!-- ----------------- LIGNE SEPARATRICE ------------------------>
+                <div class="row">
+                    <div class="col-sm-1 mid-border-compte"></div>
+                </div>
+<!-- _______________________________________________________ -->
+
+
+<!-- ----------------- 3ème PARTIE DES INFOS : PHOTOS ------------------------>
+
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Photos</h1>
+                                <p>Modifiez vos photos:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-picture-o"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot">
+                            <input class="form-control" type="file">
+                        </div>
+                        <div class="form-bottom">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                        </div>
+                    </div>
+                    <div class="col-sm-1 middle-border-compte" style="min-height: 570px;"></div>
+                    <div class="col-sm-1"></div>
+
+
+<!-- _______________________________________________________________________ -->
+
+
+<!-- ----------------- 4ème PARTIE DES INFOS : INFOS DEJA PRESENTES ------------------------>
+
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Modifiez vos informations</h1>
+                                <p>Ici vous pouvez modifier vos informations:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-info"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bottom">
+                            <input type="text" name="pseudo" placeholder="Pseudo" class="form-username form-control" id="pseudo">
+                            <br>
+                            <input type="text" name="prenom" placeholder="Prénom" class="form-first-name form-control" id="prenom">
+                            <br>
+                            <input type="text" name="nom" placeholder="Nom" class="form-last-name form-control" id="nom">
+                            <br>
+                            <input type="text" name="mail" placeholder="Mail" class="form-username form-control" id="mail">
+                            <br>
+                            <p>Pour modifier ton mot de passe clique <a href="#">ici</a> </p>
+                        </div>
+                    </div>
+                </div>
+
+                <button style="margin-bottom: 100px;" type="submit" id="submit" class="btn">Enregistrer</button>
+
+<!-- _______________________________________________________________________ -->
+
+
+            </div>
+
+<!-- ---------------------- FOOTER ---------------------->
+        <footer class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="footer-border">
+                        <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                            problème technique.</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!-- ____________________________________________________ -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,110 @@
+<html lang="fr">
+    <head>
+        <title>Petit thème</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="../css/style.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    </head>
+    <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">ACCUEIL
+                    <span class="glyphicon glyphicon-globe"></span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                        <% if(pseudo) { %>
+                    <li>Bienvenue <%pseudo%></li>
+                    <li><a href="#">
+                            Mon profil
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a></li>
+                    <li><a href="#">
+                            Mon compte
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </a></li>
+                    <li><a href="/deconnexion">
+                            Deconnexion
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                        </a></li>
+                    <% } else { %>
+                    <li><a href="/connexion">
+                            S'inscrire / Se connecter
+                            <span class="glyphicon glyphicon-user"></span>
+                        </a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <div class="bg-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <h4>SITE DE RENCONTRE</h4>
+                        <h1>MATCHA</h1>
+                        <h4>UN SITE SIMPLE ET GRATUIT</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid bg-2 text-center">
+            <p>Un site de rencontre entièrement sécurisé, avec un système de suggestions.
+                Matcha ne met qu'en avant les personnes qui vous corresponde.
+                Avec une interface simple et facile à utiliser.</p>
+        </div>
+
+        <div class="container-fluid bg-3 text-center">
+            <h1><strong>Matcha</strong> que ce que c'est ?</h1>
+            <div class="row">
+                <div class="col-sm-4">
+                    <p>Des milliers de recontres déja effectuées ! Matcha
+                    devient l'un des sites les plus efficace !</p>
+                    <img src="../img/rencontre.jpg" alt="rencontre" width="350" height="300">
+                </div>
+                <div class="col-sm-4">
+                    <p>Un site qui permet d'avoir des personnes de son entourage
+                        en suggestion !</p>
+                    <img src="../img/entourage.jpg" alt="entourage" width="350" height="300">
+                </div>
+                <div class="col-sm-4">
+                    <p>Un site sécurisé avec aucunes failles, pour naviguer sans
+                        craintes !</p>
+                    <img src="../img/code.jpg" alt="code" width="350" height="300">
+                </div>
+            </div>
+        </div>
+    <br><br>
+
+    <footer class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="footer-border">
+                    <p>Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                        problème technique.</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8080');
+    </script>
+</html>
