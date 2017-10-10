@@ -16,10 +16,10 @@ var con = mysql.createConnection({
 });
 var ent = require('ent');
 var app = express();
-var path    = require("path");
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
 var sharedsession = require("express-socket.io-session");
+var hash = require('hash.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
@@ -75,6 +75,7 @@ app.post('/post_inscription/', function(req, res) {
     var pseudo = ent.encode(req.body.pseudo);
     var email = ent.encode(req.body.email);
     var password = ent.encode(req.body.password);
+    var password = ent.encode(hash.sha256().update(req.body.password).digest('hex'));
 
     con.connect(function(err) {
       if (err) throw err;
@@ -115,12 +116,16 @@ io.sockets.on('connection', function(socket){
     socket.on("mdp_pseudo_connect", function(data){
         var pseudo = ent.encode(data.pseudo);
         var password = ent.encode(data.mdp);
+        var pwd2 = hash.sha256().update(password).digest('hex');
         var test;
 
+        con.query("use matcha", function (err, result) {
+            if (err) throw err;
+        });
         con.query("SELECT * FROM USERS WHERE PSEUDO = '"+pseudo+"'", function (err, result) {
             if (err) throw err;
             if (result.length && result[0].email) {
-                if ((test = result[0].password.localeCompare(password)) == 0) {
+                if ((test = result[0].password.localeCompare(pwd2)) == 0) {
                     socket.emit("connection_verification", "oui");
                 } else {
                     socket.emit("connection_verification", "non");

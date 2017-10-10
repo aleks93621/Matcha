@@ -21,9 +21,9 @@ con.connect(function(err) {
       "id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,"+
       "email VARCHAR(255) NOT NULL,"+
       "password VARCHAR(1000) NOT NULL,"+
-      "pseudo VARCHAR(255) NOT NULL,"+
-      "nom VARCHAR(255) NOT NULL,"+
-      "prenom VARCHAR(255) NOT NULL," +
+      "pseudo VARCHAR(20) NOT NULL,"+
+      "nom VARCHAR(40) NOT NULL,"+
+      "prenom VARCHAR(40) NOT NULL," +
       "sexe enum('homme', 'femme') DEFAULT NULL," +
       "orientation_sexuelle enum('bisexuel', 'heterosexuel', 'homosexuel') NOT NULL DEFAULT 'bisexuel'," +
       "bio VARCHAR(255) DEFAULT NULL," +

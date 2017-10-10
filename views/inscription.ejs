@@ -122,7 +122,7 @@
                                             <label class="sr-only" for="pseudo">Pseudo</label>
                                             <input type="text" name="pseudo" placeholder="Pseudo" class="form-first-name form-control" id="pseudo">
                                         </div>
-                                        <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères</strong></span>
+                                        <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères et au plus 20</strong></span>
 
                                         <!-- PRENOM -->
                                         <div class="form-group">
@@ -134,8 +134,8 @@
                                             <label class="sr-only" for="nom">Nom</label>
                                             <input type="text" name="nom" placeholder="Nom" class="form-email form-control" id="nom">
                                         </div>
-                                        <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères</strong></span>
-                                        <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères</strong></span>
+                                        <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères et au plus 40</strong></span>
+                                        <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères et au plus 40</strong></span>
 
                                         <!-- MAIL -->
                                         <div class="form-group">
@@ -195,9 +195,10 @@
                 if ((tester = rep.localeCompare("oui")) == 0) {
                     $('#err_connec').attr('style', 'display: none;');
                     $.post('/post_connexion/', {pseudo: pseudo}, function(returnedData){
-                       console.log(returnedData);
                     });
-                    document.location.href="/";
+                    setTimeout(function() {
+                        window.location.href = "/";
+                    }, 1000);
                 } else {
                     $('#err_connec').attr('style', '');
                 }
@@ -221,9 +222,9 @@
                 var password = $('#password').val();
                 var password2 = $('#password2').val();
 
-                if (pseudo && pseudo.length > 4 && pseudo.length < 255
-                    && prenom && prenom.length > 2 && prenom.length < 255
-                    && nom && nom.length > 2 && nom.length < 255
+                if (pseudo && pseudo.length > 4 && pseudo.length <= 20
+                    && prenom && prenom.length > 2 && prenom.length <= 40
+                    && nom && nom.length > 2 && nom.length <= 40
                     && email && validateEmail(email)
                     && password && validatePw(password)
                     && password2 && password2 == password) {
@@ -242,7 +243,7 @@
 
             $('#pseudo').on('blur', function() {
                 var pseudo = $('#pseudo').val();
-                if (pseudo && pseudo.length > 4 && pseudo.length < 255) {
+                if (pseudo && pseudo.length > 4 && pseudo.length <= 20) {
                     $('#pseudo').attr('style', 'border: 1.5px solid green;');
                     $('#err_pseudo').attr('style', 'display: none;');
                 }
@@ -254,7 +255,7 @@
 
             $('#prenom').on('blur', function() {
                 var prenom = $('#prenom').val();
-                if (prenom && prenom.length > 2 && prenom.length < 255) {
+                if (prenom && prenom.length > 2 && prenom.length <= 40) {
                     $('#prenom').attr('style', 'border: 1.5px solid green;');
                     $('#err_prenom').attr('style', 'display: none;');
                 }
@@ -265,7 +266,7 @@
             });
             $('#nom').on('blur', function() {
                 var nom = $('#nom').val();
-                if (nom && nom.length > 2 && nom.length < 255) {
+                if (nom && nom.length > 2 && nom.length <= 40) {
                     $('#nom').attr('style', 'border: 1.5px solid green;');
                     $('#err_nom').attr('style', 'display: none;');
                 }
