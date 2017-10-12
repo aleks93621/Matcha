@@ -120,19 +120,20 @@
                                         <!-- PSEUDO -->
                                         <div class="form-group">
                                             <label class="sr-only" for="pseudo">Pseudo</label>
-                                            <input type="text" name="pseudo" placeholder="Pseudo" class="form-first-name form-control" id="pseudo">
+                                            <input type="text" name="pseudo" maxlength="20" placeholder="Pseudo" class="form-first-name form-control" id="pseudo">
                                         </div>
                                         <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères et au plus 20</strong></span>
+                                        <span id="err_pseudo2" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Ce pseudo est déjà utilisé</strong></span>
 
                                         <!-- PRENOM -->
                                         <div class="form-group">
                                             <label class="sr-only" for="prenom">Prénom</label>
-                                            <input type="text" name="prenom" placeholder="Prénom" class="form-last-name form-control" id="prenom">
+                                            <input type="text" name="prenom" maxlength="40" placeholder="Prénom" class="form-last-name form-control" id="prenom">
                                         </div>
                                         <!-- NOM -->
                                         <div class="form-group">
                                             <label class="sr-only" for="nom">Nom</label>
-                                            <input type="text" name="nom" placeholder="Nom" class="form-email form-control" id="nom">
+                                            <input type="text" name="nom" maxlength="40" placeholder="Nom" class="form-email form-control" id="nom">
                                         </div>
                                         <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères et au plus 40</strong></span>
                                         <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères et au plus 40</strong></span>
@@ -140,7 +141,7 @@
                                         <!-- MAIL -->
                                         <div class="form-group">
                                             <label class="sr-only" for="email">Email</label>
-                                            <input type="text" name="email" placeholder="Email" class="form-email form-control" id="email">
+                                            <input type="text" name="email" maxlength="255" placeholder="Email" class="form-email form-control" id="email">
                                         </div>
                                         <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Format mail non valide</strong></span>
                                         <!-- PASS -->
@@ -214,6 +215,19 @@
                 return re.test(pw);
             }
 
+            function emit_pseudo_same(pseudo) {
+                var result;
+                socket.emit('pseudo_same_vers_serveur', {pseudo});
+                socket.on('pseudo_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        result = "1";
+                    }  else {
+                        result = "0";
+                    }
+                });
+                return result;
+            }
+
             $('#submit').on('click', function() {
                 var pseudo = $('#pseudo').val();
                 var prenom = $('#prenom').val();
@@ -228,7 +242,15 @@
                     && email && validateEmail(email)
                     && password && validatePw(password)
                     && password2 && password2 == password) {
-                    return;
+
+                    socket.emit('pseudo_same_vers_serveur', {pseudo});
+                    socket.on('pseudo_same_vers_client', function(rep) {
+                        if (rep != "0") {
+                            return false;
+                        } else {
+                            return;
+                        }
+                    });
                 }
                 else {
                     $('#pseudo').trigger('blur');
@@ -241,17 +263,33 @@
                 }
             });
 
-            $('#pseudo').on('blur', function() {
+            var pseudo_key = function () {
                 var pseudo = $('#pseudo').val();
                 if (pseudo && pseudo.length > 4 && pseudo.length <= 20) {
-                    $('#pseudo').attr('style', 'border: 1.5px solid green;');
-                    $('#err_pseudo').attr('style', 'display: none;');
+                    console.log(emit_pseudo_same(pseudo));
+                    if (!emit_pseudo_same(pseudo)) {
+                        $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                        $('#err_pseudo2').attr('style', '');
+                    }
+                    else {
+                        $('#pseudo').attr('style', 'border: 1.5px solid green;');
+                        $('#err_pseudo2').attr('style', 'display: none;');
+                        $('#err_pseudo').attr('style', 'display: none;');
+                    }
                 }
                 else if (pseudo.length > 0) {
                     $('#pseudo').attr('style', 'border: 1.5px solid red;');
                     $('#err_pseudo').attr('style', '');
                 }
-            });
+                else {
+                    $('#pseudo').attr('style', '');
+                }
+            }
+            $('#pseudo').keyup(pseudo_key)
+                .keypress(pseudo_key)
+                .blur(pseudo_key)
+                .change(pseudo_key)
+
 
             $('#prenom').on('blur', function() {
                 var prenom = $('#prenom').val();

@@ -77,12 +77,9 @@ app.post('/post_inscription/', function(req, res) {
     var password = ent.encode(req.body.password);
     var password = ent.encode(hash.sha256().update(req.body.password).digest('hex'));
 
-    con.connect(function(err) {
-      if (err) throw err;
       con.query("INSERT INTO users (nom, prenom, pseudo, email, password) VALUES ('"+nom+"','"+prenom+"','"+pseudo+"','"+email+"','"+password+"')", function (err, result) {
         if (err) throw err;
       });
-    });
     return res.redirect('/inscription/');
 });
 
@@ -132,6 +129,17 @@ io.sockets.on('connection', function(socket){
                 }
             } else {
                 socket.emit("connection_verification", "non");
+            }
+        });
+    });
+
+    socket.on("pseudo_same_vers_serveur", function(data){
+        var pseudo = data.pseudo;
+        con.query("SELECT * FROM USERS WHERE pseudo = ?", pseudo, function (err, result) {
+            if (result[0]) {
+                socket.emit("pseudo_same_vers_client", "1");
+            } else {
+                socket.emit("pseudo_same_vers_client", "0");
             }
         });
     });
