@@ -80,7 +80,7 @@ app.post('/post_inscription/', function(req, res) {
       con.query("INSERT INTO users (nom, prenom, pseudo, email, password) VALUES ('"+nom+"','"+prenom+"','"+pseudo+"','"+email+"','"+password+"')", function (err, result) {
         if (err) throw err;
       });
-    return res.redirect('/inscription/');
+    res.redirect('back');
 });
 
 app.post('/post_connexion/', function(req, res) {
@@ -116,9 +116,6 @@ io.sockets.on('connection', function(socket){
         var pwd2 = hash.sha256().update(password).digest('hex');
         var test;
 
-        con.query("use matcha", function (err, result) {
-            if (err) throw err;
-        });
         con.query("SELECT * FROM USERS WHERE PSEUDO = '"+pseudo+"'", function (err, result) {
             if (err) throw err;
             if (result.length && result[0].email) {
@@ -140,6 +137,17 @@ io.sockets.on('connection', function(socket){
                 socket.emit("pseudo_same_vers_client", "1");
             } else {
                 socket.emit("pseudo_same_vers_client", "0");
+            }
+        });
+    });
+
+    socket.on("mail_same_vers_serveur", function(data){
+        var mail = data.mail;
+        con.query("SELECT * FROM USERS WHERE email = ?", mail, function (err, result) {
+            if (result[0]) {
+                socket.emit("mail_same_vers_client", "1");
+            } else {
+                socket.emit("mail_same_vers_client", "0");
             }
         });
     });

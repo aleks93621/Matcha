@@ -1,4 +1,4 @@
-<html lang="fr">
+<html>
 <head>
     <title>Petit thème</title>
     <meta charset="utf-8">
@@ -82,14 +82,14 @@
                                     <div class="form-group">
                                         <label class="sr-only" for="pseudo1">Pseudo</label>
                                         <div class="inner-addon right-addon">
-                                            <input type="text" name="pseudo1" placeholder="Pseudo" class="form-username form-control" id="pseudo1">
+                                            <input type="text" maxlength="20" name="pseudo1" placeholder="Pseudo" class="form-username form-control" id="pseudo1">
                                             <i class="glyphicon glyphicon-user"></i>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="sr-only" for="mdp11">Mot de passe</label>
                                         <div class="inner-addon right-addon">
-                                            <input type="password" name="mdp11" placeholder="•••••••••••" class="form-password form-control" id="mdp11">
+                                            <input maxlength="255" type="password" name="mdp11" placeholder="•••••••••••" class="form-password form-control" id="mdp11">
                                             <i class="glyphicon glyphicon-lock"></i>
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@
                                             <label class="sr-only" for="pseudo">Pseudo</label>
                                             <input type="text" name="pseudo" maxlength="20" placeholder="Pseudo" class="form-first-name form-control" id="pseudo">
                                         </div>
-                                        <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères et au plus 20</strong></span>
+                                        <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le pseudo doit contenir au moins 5 caractères</strong></span>
                                         <span id="err_pseudo2" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Ce pseudo est déjà utilisé</strong></span>
 
                                         <!-- PRENOM -->
@@ -135,8 +135,8 @@
                                             <label class="sr-only" for="nom">Nom</label>
                                             <input type="text" name="nom" maxlength="40" placeholder="Nom" class="form-email form-control" id="nom">
                                         </div>
-                                        <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères et au plus 40</strong></span>
-                                        <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères et au plus 40</strong></span>
+                                        <span id="err_prenom"class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le prénom doit faire au moins 2 caractères</strong></span>
+                                        <span id="err_nom" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Le nom doit faire au moins 2 caractères</strong></span>
 
                                         <!-- MAIL -->
                                         <div class="form-group">
@@ -144,6 +144,7 @@
                                             <input type="text" name="email" maxlength="255" placeholder="Email" class="form-email form-control" id="email">
                                         </div>
                                         <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Format mail non valide</strong></span>
+                                        <span id="err_email2" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Cette adresse mail est déjà utilisée</strong></span>
                                         <!-- PASS -->
                                         <div class="form-group">
                                             <label class="sr-only" for="password">Mot de passe 1</label>
@@ -151,12 +152,12 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="sr-only" for="password2">Mot de passe 2</label>
-                                            <input type="password" name="password2" placeholder="•••••••••••" class="form-email form-control" id="password2">
+                                            <input type="password" maxlength="255" name="password2" placeholder="•••••••••••" class="form-email form-control" id="password2">
                                         </div>
                                         <span id="err_password" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Choisissez un mot de passe plus sûr</strong></span>
-                                        <span id="err_password2" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Les mots de passe ne correspondent pas</strong></span>
+                                        <span id="err_password2" maxlenght="255" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Les mots de passe ne correspondent pas</strong></span>
 
-                                        <button type="submit" id="submit" class="btn">S'inscrire</button>
+                                        <button type="submit" id="submit2" class="btn">S'inscrire</button>
                                     </form>
                                 </div>
                             </div>
@@ -170,7 +171,7 @@
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="footer-border">
                         <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
-                            problème technique.</a></p>
+                            problème technique.</p>
                     </div>
                 </div>
             </div>
@@ -216,19 +217,30 @@
             }
 
             function emit_pseudo_same(pseudo) {
-                var result;
                 socket.emit('pseudo_same_vers_serveur', {pseudo});
-                socket.on('pseudo_same_vers_client', function(rep){
+                var trkli = socket.on('pseudo_same_vers_client', function(rep){
                     if (rep != "0"){
-                        result = "1";
+                        this.resulti = "1";
                     }  else {
-                        result = "0";
+                        this.resulti = "0";
                     }
                 });
-                return result;
+                return trkli.resulti;
             }
 
-            $('#submit').on('click', function() {
+            function emit_mail_same(mail) {
+                socket.emit('mail_same_vers_serveur', {mail});
+                var trkl = socket.on('mail_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        this.result = "1";
+                    }  else {
+                        this.result = "0";
+                    }
+                });
+                return trkl.result;
+            }
+
+            $('#submit2').on('click', function() {
                 var pseudo = $('#pseudo').val();
                 var prenom = $('#prenom').val();
                 var nom = $('#nom').val();
@@ -242,15 +254,12 @@
                     && email && validateEmail(email)
                     && password && validatePw(password)
                     && password2 && password2 == password) {
-
-                    socket.emit('pseudo_same_vers_serveur', {pseudo});
-                    socket.on('pseudo_same_vers_client', function(rep) {
-                        if (rep != "0") {
-                            return false;
-                        } else {
-                            return;
-                        }
-                    });
+                     if (emit_mail_same(email) == "1" || emit_pseudo_same(pseudo) == "1") {
+                         return false;
+                     }
+                     else {
+                         return;
+                     }
                 }
                 else {
                     $('#pseudo').trigger('blur');
@@ -263,11 +272,13 @@
                 }
             });
 
+            /* PARTIE PSEUDO */
+
+
             var pseudo_key = function () {
                 var pseudo = $('#pseudo').val();
                 if (pseudo && pseudo.length > 4 && pseudo.length <= 20) {
-                    console.log(emit_pseudo_same(pseudo));
-                    if (!emit_pseudo_same(pseudo)) {
+                    if (emit_pseudo_same(pseudo) == "1") {
                         $('#pseudo').attr('style', 'border: 1.5px solid red;');
                         $('#err_pseudo2').attr('style', '');
                     }
@@ -280,6 +291,7 @@
                 else if (pseudo.length > 0) {
                     $('#pseudo').attr('style', 'border: 1.5px solid red;');
                     $('#err_pseudo').attr('style', '');
+                    $('#err_pseudo2').attr('style', 'display: none;');
                 }
                 else {
                     $('#pseudo').attr('style', '');
@@ -291,39 +303,78 @@
                 .change(pseudo_key)
 
 
-            $('#prenom').on('blur', function() {
-                var prenom = $('#prenom').val();
-                if (prenom && prenom.length > 2 && prenom.length <= 40) {
-                    $('#prenom').attr('style', 'border: 1.5px solid green;');
-                    $('#err_prenom').attr('style', 'display: none;');
-                }
-                else if (prenom.length > 0) {
-                    $('#prenom').attr('style', 'border: 1.5px solid red;');
-                    $('#err_prenom').attr('style', '');
-                }
-            });
-            $('#nom').on('blur', function() {
-                var nom = $('#nom').val();
-                if (nom && nom.length > 2 && nom.length <= 40) {
+        ///////////////////////////////////////////////////////////////////////////////
+        /* PARTIE NOM PRENOM */
+            var nom_key = function() {
+                var prenom = $('#nom').val();
+                if (prenom && prenom.length >= 2 && prenom.length <= 40) {
                     $('#nom').attr('style', 'border: 1.5px solid green;');
                     $('#err_nom').attr('style', 'display: none;');
                 }
-                else if (nom.length > 0) {
+                else if (prenom.length > 0) {
                     $('#nom').attr('style', 'border: 1.5px solid red;');
                     $('#err_nom').attr('style', '');
                 }
-            });
-            $('#email').on('blur', function() {
+                else {
+                    $('#nom').attr('style', '');
+                }
+            }
+            $('#nom').keyup(nom_key)
+                .keypress(nom_key)
+                .blur(nom_key)
+                .change(nom_key)
+
+            var prenom_key = function() {
+                var nom = $('#prenom').val();
+                if (nom && nom.length >= 2 && nom.length <= 40) {
+                    $('#prenom').attr('style', 'border: 1.5px solid green;');
+                    $('#err_prenom').attr('style', 'display: none;');
+                }
+                else if (nom.length > 0) {
+                    $('#prenom').attr('style', 'border: 1.5px solid red;');
+                    $('#err_prenom').attr('style', '');
+                }
+                else {
+                    $('#prenom').attr('style', '');
+                }
+            }
+            $('#prenom').keyup(prenom_key)
+                .keypress(prenom_key)
+                .blur(prenom_key)
+                .change(prenom_key)
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////
+
+            /* PARTIE MAIL */
+            var mail_key = function() {
                 var email = $('#email').val();
                 if (email && validateEmail(email)) {
-                    $('#email').attr('style', 'border: 1.5px solid green;');
-                    $('#err_email').attr('style', 'display: none;');
+                    if (emit_mail_same(email) == "1") {
+                        $('#email').attr('style', 'border: 1.5px solid red;');
+                        $('#err_email2').attr('style', '');
+                    }
+                    else {
+                        $('#email').attr('style', 'border: 1.5px solid green;');
+                        $('#err_email').attr('style', 'display: none;');
+                        $('#err_email2').attr('style', 'display: none;');
+                    }
                 }
                 else if (email.length > 0) {
                     $('#email').attr('style', 'border: 1.5px solid red;');
-                    $('#err_email').attr('style', '');
+                    $('#err_email').attr('style', 'display: none;');
+                    $('#err_email2').attr('style', 'display: none;');
                 }
-            });
+                else {
+                    $('#email').attr('style', '');
+                }
+            }
+            $('#email').keyup(mail_key)
+                .keypress(mail_key)
+                .blur(mail_key)
+                .change(mail_key)
+
+            /******************************************************************************************/
+
             $('#password').on('blur', function() {
                 var password = $('#password').val();
                 if (password && validatePw(password)) {
@@ -334,6 +385,8 @@
                     $('#password').attr('style', 'border: 1.5px solid red;');
                     $('#password2').attr('style', 'border: 1.5px solid red;');
                     $('#err_password').attr('style', '');
+                } else {
+                    $('#password').attr('style', 'border: 1.5px solid red;');
                 }
             });
             $('#password2').on('blur', function() {
@@ -343,9 +396,12 @@
                     $('#password2').attr('style', 'border: 1.5px solid green;');
                     $('#err_password2').attr('style', 'display: none;');
                 }
-                else if (password2.length > 0) {
+                else if (password2.length > 0 && password) {
                     $('#password2').attr('style', 'border: 1.5px solid red;');
                     $('#err_password2').attr('style', '');
+                }
+                else {
+                    $('#password2').attr('style', '');
                 }
             });
         </script>

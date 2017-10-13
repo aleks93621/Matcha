@@ -109,8 +109,9 @@
                         <div class="form-bot">
                                 <select id="select_orientation" class="form-control">
                                     <option value="orientation_bisexuel" selected>Choisissez...</option>
-                                    <option value="orientation_homme">Homme</option>
-                                    <option value="orientation_femme">Femme</option>
+                                    <option value="orientation_homme">Hétérosexuel</option>
+                                    <option value="orientation_femme">Homosexuel</option>
+                                    <option value="orientation_femme">Bisexuel</option>
                                 </select>
                         </div>
                     </div>
@@ -219,12 +220,14 @@
 
                         <div class="form-bottom">
                             <input maxlength="20" id="pseudo" type="text" name="pseudo" placeholder="<%=session%> (Pseudo)" class="form-username form-control" id="pseudo">
+                            <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Ce pseudo est déjà utilisé</strong></span>
                             <br>
                             <input maxlength="40" id="prenom" type="text" name="prenom" placeholder="<%=prenom%> (Prénom)" class="form-first-name form-control" id="prenom">
                             <br>
                             <input maxlength="40" id="nom" type="text" name="nom" placeholder="<%=nom%> (Nom)" class="form-last-name form-control" id="nom">
                             <br>
-                            <input maxlength="255" id="mail" type="text" name="mail" placeholder="<%=email%> (Email)" class="form-username form-control" id="mail">
+                            <input maxlength="255" id="email" type="text" name="email" placeholder="<%=email%> (Email)" class="form-username form-control" id="mail">
+                            <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Cette adresse mail est déjà utilisée</strong></span>
                             <br>
                             <p>Pour modifier ton mot de passe clique <a href="#">ici</a> </p>
                         </div>
@@ -232,6 +235,7 @@
                 </div>
 
                 <button style="margin-bottom: 100px;" type="submit" id="submit" class="btn">Enregistrer</button>
+                <input type="text" class="form-control" id="tokenfield" value="red,green,blue" />
 
 <!-- _______________________________________________________________________ -->
 
@@ -244,7 +248,7 @@
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="footer-border">
                         <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
-                            problème technique.</a></p>
+                            problème technique.</p>
                     </div>
                 </div>
             </div>
@@ -264,14 +268,38 @@
                 var pseudo = $('#pseudo').val();
                 var prenom = $('#prenom').val();
                 var nom = $('#nom').val();
-                var mail = $('#mail').val();
+                var email = $('#email').val();
 
-                if (mail) {
+                if (email) {
                     var extension = upload_img.substr( (upload_img.lastIndexOf('.') +1) )
                     console.log(sexe_select + " - " + orientation_sexuelle + " - " + bio + " - " + liste_interets + " - " + extension + " - " + pseudo + " - " + prenom + " - " + nom + " - " + mail);
                 }
                 return false;
             });
+
+            function emit_pseudo_same(pseudo) {
+                socket.emit('pseudo_same_vers_serveur', {pseudo});
+                var trkli = socket.on('pseudo_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        this.resulti = "1";
+                    }  else {
+                        this.resulti = "0";
+                    }
+                });
+                return trkli.resulti;
+            }
+
+            function emit_mail_same(mail) {
+                socket.emit('mail_same_vers_serveur', {mail});
+                var trkl = socket.on('mail_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        this.result = "1";
+                    }  else {
+                        this.result = "0";
+                    }
+                });
+                return trkl.result;
+            }
 
             function validateEmail(email) {
                 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -281,13 +309,22 @@
             var pseudo_key = function () {
                 var pseudo = $('#pseudo').val();
                 if (pseudo && pseudo.length > 4 && pseudo.length <= 20) {
-                    $('#pseudo').attr('style', 'border: 1.5px solid green;');
+                    if (emit_pseudo_same(pseudo) == "1") {
+                        $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                        $('#err_pseudo').attr('style', '');
+                    }
+                    else {
+                        $('#pseudo').attr('style', 'border: 1.5px solid green;');
+                        $('#err_pseudo').attr('style', 'display: none;');
+                    }
                 }
                 else if (pseudo.length > 0) {
                     $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                    $('#err_pseudo').attr('style', 'display: none;');
                 }
                 else {
                     $('#pseudo').attr('style', '');
+                    $('#err_pseudo').attr('style', 'display: none;');
                 }
             }
 
@@ -331,18 +368,27 @@
                 .change(nom_key)
 
             var mail_key = function () {
-                var mail = $('#mail').val();
-                if (mail && validateEmail(mail)) {
-                    $('#mail').attr('style', 'border: 1.5px solid green;');
+                var email = $('#email').val();
+                if (email && validateEmail(email)) {
+                    if (emit_mail_same(email) == "1") {
+                        $('#email').attr('style', 'border: 1.5px solid red;');
+                        $('#err_email').attr('style', '');
+                    }
+                    else {
+                        $('#email').attr('style', 'border: 1.5px solid green;');
+                        $('#err_email').attr('style', 'display: none;');
+                    }
                 }
-                else if (mail.length > 0) {
-                    $('#mail').attr('style', 'border: 1.5px solid red;');
+                else if (email.length > 0) {
+                    $('#email').attr('style', 'border: 1.5px solid red;');
+                    $('#err_email').attr('style', 'display: none;');
                 }
                 else {
-                    $('#mail').attr('style', '');
+                    $('#email').attr('style', '');
+                    $('#err_email').attr('style', 'display: none;');
                 }
             }
-            $('#mail').keyup(mail_key)
+            $('#email').keyup(mail_key)
                 .keypress(mail_key)
                 .blur(mail_key)
                 .change(mail_key)
