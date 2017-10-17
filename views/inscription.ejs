@@ -295,6 +295,8 @@
                 }
                 else {
                     $('#pseudo').attr('style', '');
+                    $('#err_pseudo2').attr('style', 'display: none');
+                    $('#err_pseudo').attr('style', 'display: none');
                 }
             }
             $('#pseudo').keyup(pseudo_key)
@@ -317,6 +319,7 @@
                 }
                 else {
                     $('#nom').attr('style', '');
+                    $('#err_nom').attr('style', 'display: none');
                 }
             }
             $('#nom').keyup(nom_key)
@@ -336,6 +339,7 @@
                 }
                 else {
                     $('#prenom').attr('style', '');
+                    $('#err_prenom').attr('style', 'display: none;');
                 }
             }
             $('#prenom').keyup(prenom_key)
@@ -366,6 +370,8 @@
                 }
                 else {
                     $('#email').attr('style', '');
+                    $('#err_email').attr('style', 'display: none;');
+                    $('#err_email2').attr('style', 'display: none;');
                 }
             }
             $('#email').keyup(mail_key)
