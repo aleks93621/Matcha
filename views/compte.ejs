@@ -268,19 +268,7 @@
                     mainInput = document.createElement('input'),
                     tags_serv = <%-JSON.stringify(tags_server)%>;
 
-
-                console.log(tags_serv);
-                if (tags_serv) {
-                    tags = tags_serv.split(',', 1);
-                    tags.forEach(function (e) {
-                        console.log(e);
-                    });
-                    tags.forEach(function (e) {
-                        addTag(e);
-                    });
-                } else {
-                    tags = [];
-                }
+                var tags = [];
 
                 hiddenInput.setAttribute('type', 'hidden');
                 hiddenInput.setAttribute('name', el.getAttribute('data-name'));
@@ -306,6 +294,13 @@
 
                 el.appendChild(mainInput);
                 el.appendChild(hiddenInput);
+
+                if (tags_serv) {
+                    tags_db = tags_serv.split(',');
+                    tags_db.forEach(function (e) {
+                        addTag(e);
+                    });
+                }
 
                 function addTag(text) {
                     let tag = {
