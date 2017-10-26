@@ -29,7 +29,6 @@ textarea {
     background: rgba(132, 132, 132, 0.2);
     -moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
     text-align: left;
-    height: 100px;
     width: 100%;
     border-color: #19b9e7;
 }
@@ -60,4 +59,44 @@ textarea {
 
 .bio_input {
     height: 300px;
+}
+
+.tags-input {
+    display: inline-block;
+}
+
+.tags-input .tag {
+    font-size: 90%;
+    color: white;
+    padding: 0.2em 0.90em;
+    margin: 0.1em;
+    display: inline-block;
+    background: #3af;
+    transition: all 0.1s linear;
+}
+
+.tags-input .tag:hover {
+    background: orangered;
+    color: white;
+}
+
+.tags-input .tag .close::after {
+    content: '×';
+    font-weight: bold;
+    display: inline-block;
+    transform: scale(1.1);
+    margin-left: 0.35em;
+    margin-top: 0.20em;
+}
+
+.tags-input .tag .close:hover::after {
+    color: white;
+    cursor: pointer;
+}
+
+.tags-input .main-input {
+    border: 0;
+    width: 400px;
+    outline: 0;
+    padding: 0.4em 0.8em;
 }

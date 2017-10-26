@@ -33,7 +33,8 @@ con.connect(function(err) {
       "img_2 VARCHAR(255) DEFAULT NULL," +
       "img_3 VARCHAR(255) DEFAULT NULL," +
       "img_4 VARCHAR(255) DEFAULT NULL," +
-      "img_5 VARCHAR(255) DEFAULT NULL)", function (err, result) {
+      "img_5 VARCHAR(255) DEFAULT NULL," +
+      "cle_mdp_reset VARCHAR(1000) DEFAULT NULL)" , function (err, result) {
     if (err) throw err;
   });
 

@@ -14,6 +14,7 @@
         <link href="../css/form.css" rel="stylesheet">
         <link href="../css/compte.css" rel="stylesheet">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     </head>
 
     <body>
@@ -151,18 +152,20 @@
                         <div class="form-top-sexe">
                             <div class="texte-boite-sexe">
                                 <h1>Liste d'intérêts</h1>
-                                <p>Vos listes d'intérêts(sans virgule, avec espace). Exemple : #bio #geek #piercing</p>
+                                <p>Vos listes d'intérêts(Maximum 10). Exemple : bio geek</p>
                             </div>
                             <div class="form-top-right">
                                 <i class="fa fa-list"></i>
                             </div>
                         </div>
 
-                        <div class="form-bot" style="height: 150px;">
-                            <textarea maxlength="255" style="height: 100px;" class="form-control bio_input" placeholder="Liste d'intérêts"></textarea>
+                        <div class="form-bot">
+                            <div class="tags-input" data-name="tags-input">
+                            </div>
                         </div>
                     </div>
                 </div>
+
 <!-- ____________________________________________________________________________________________________________ -->
 
 <!-- ----------------- LIGNE SEPARATRICE ------------------------>
@@ -229,13 +232,15 @@
                             <input maxlength="255" id="email" type="text" name="email" placeholder="<%=email%> (Email)" class="form-username form-control" id="mail">
                             <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Cette adresse mail est déjà utilisée</strong></span>
                             <br>
-                            <p>Pour modifier ton mot de passe clique <a href="#">ici</a> </p>
+                            <p>Pour modifier ton mot de passe clique <a id="modif_mdp" style="cursor: pointer;">ici</a> </p>
+                            <div class="alert alert-success" style="display: none;" id="mail_succes">
+                                Une confirmation a été envoyée à votre adresse mail <%=email%>.
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <button style="margin-bottom: 100px;" type="submit" id="submit" class="btn">Enregistrer</button>
-                <input type="text" class="form-control" id="tokenfield" value="red,green,blue" />
 
 <!-- _______________________________________________________________________ -->
 
@@ -254,16 +259,100 @@
             </div>
         </footer>
 <!-- ____________________________________________________ -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://localhost:8080');
+
+            [].forEach.call(document.getElementsByClassName('tags-input'), function(el){
+                let hiddenInput = document.createElement('input'),
+                    mainInput = document.createElement('input'),
+                    tags_serv = <%-JSON.stringify(tags_server)%>;
+
+
+                console.log(tags_serv);
+                if (tags_serv) {
+                    tags = tags_serv.split(',', 1);
+                    tags.forEach(function (e) {
+                        console.log(e);
+                    });
+                    tags.forEach(function (e) {
+                        addTag(e);
+                    });
+                } else {
+                    tags = [];
+                }
+
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', el.getAttribute('data-name'));
+                hiddenInput.setAttribute('id', 'tgs-input');
+
+                mainInput.setAttribute('maxlength', '20');
+                mainInput.setAttribute('type', 'text');
+                mainInput.setAttribute('placeholder', "Entrez vos tags ici");
+                mainInput.classList.add('main-input');
+                mainInput.addEventListener('keypress', function(e){
+                    if (e.keyCode == 13) {
+                        let enteredTags = mainInput.value;
+                        let filteredTag = filterTag(enteredTags);
+
+                        var same_tag = tags.filter(tag => tag.text === filteredTag);
+
+                        if (filteredTag.length > 0 && same_tag.length < 1 && tags.length < 10){
+                            addTag(filteredTag);
+                            mainInput.value = "";
+                        }
+                    }
+                });
+
+                el.appendChild(mainInput);
+                el.appendChild(hiddenInput);
+
+                function addTag(text) {
+                    let tag = {
+                        text: text,
+                        element: document.createElement('span')
+                    };
+                    tag.element.classList.add('tag');
+                    tag.element.textContent = tag.text;
+
+                    let closeBtn = document.createElement('span');
+                    closeBtn.classList.add('close');
+                    closeBtn.addEventListener('click', function(){
+                        removeTag(tags.indexOf(tag));
+                    });
+                    tag.element.appendChild(closeBtn);
+
+                    tags.push(tag);
+
+                    el.insertBefore(tag.element, mainInput);
+                    refreshTags();
+                }
+
+                function removeTag(index) {
+                    let tag = tags[index];
+                    tags.splice(index, 1);
+                    el.removeChild(tag.element);
+                    refreshTags();
+                }
+
+                function refreshTags() {
+                    let tagsList = [];
+                    tags.forEach(function(t) {
+                        tagsList.push(t.text);
+                    });
+                    hiddenInput.value = tagsList.join(',');
+                }
+
+                function filterTag(tag) {
+                    return tag.replace(/[^\w -]/g, '').trim().replace(/\W+/g, '-');
+                }
+            });
 
             $('#submit').on('click', function(){
                 var sexe_select = $('#select_sexe').val();
                 var orientation_sexuelle = $('#select_orientation').val();
                 var bio = $('#bio').val();
-                var liste_interets = $('#liste_interets').val();
+                var liste_interets = $('#tgs-input').val();
                 var upload_img = $('#upload_img').val();
                 var pseudo = $('#pseudo').val();
                 var prenom = $('#prenom').val();
@@ -272,9 +361,19 @@
 
                 if (email) {
                     var extension = upload_img.substr( (upload_img.lastIndexOf('.') +1) )
-                    console.log(sexe_select + " - " + orientation_sexuelle + " - " + bio + " - " + liste_interets + " - " + extension + " - " + pseudo + " - " + prenom + " - " + nom + " - " + mail);
+                    console.log(sexe_select + " - " + orientation_sexuelle + " - " + bio + " - " + liste_interets + " - " + extension + " - " + pseudo + " - " + prenom + " - " + nom + " - " + email);
+                }
+                if (liste_interets) {
+                    socket.emit('liste_interets', {liste_interets});
                 }
                 return false;
+            });
+
+            $('#modif_mdp').on('click', function () {
+                $('#mail_succes').fadeIn('slow', function(){
+                    $('#mail_succes').delay(5000).fadeOut();
+                });
+                socket.emit('modif_mdp', "");
             });
 
             function emit_pseudo_same(pseudo) {
@@ -397,6 +496,5 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
         <script src="../js/scripts.js"></script>
-
     </body>
 </html>
