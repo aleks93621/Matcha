@@ -358,9 +358,7 @@
                     var extension = upload_img.substr( (upload_img.lastIndexOf('.') +1) )
                     console.log(sexe_select + " - " + orientation_sexuelle + " - " + bio + " - " + liste_interets + " - " + extension + " - " + pseudo + " - " + prenom + " - " + nom + " - " + email);
                 }
-                if (liste_interets) {
-                    socket.emit('liste_interets', {liste_interets});
-                }
+                socket.emit('liste_interets', {liste_interets});
                 return false;
             });
 
