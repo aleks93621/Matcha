@@ -1,0 +1,493 @@
+<html>
+    <head>
+        <title>Petit thème</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet">
+        <link href="../css/form.css" rel="stylesheet">
+        <link href="../css/compte.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    </head>
+
+    <body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ACCUEIL
+                <span class="glyphicon glyphicon-globe"></span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <% if (session) { %>
+                <li><a href="#">
+                        Mon profil
+                        <span class="glyphicon glyphicon-user"></span>
+                    </a></li>
+                <li><a href="/compte">
+                        Mon compte
+                        <span class="glyphicon glyphicon-wrench"></span>
+                    </a></li>
+                <li><a href="/deconnexion">
+                        Deconnexion
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a></li>
+                <% } else { %>
+                <li><a href="/connexion">
+                        Inscription / Connexion
+                        <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                    </a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- ____________________________ -->
+
+<!-- HAUT DE LA DIV:"MON COMPTE" -->
+        <div class="container div-top">
+          <h1>Mon <strong>Compte</strong></h1>
+          <p>Cette page sert à apporter des <strong>modifications</strong>
+             ou bien des <strong>informations</strong> à votre profil.</p>
+        </div>
+<!-- ____________________________ -->
+
+
+<!-- ----------------- 1ère PARTIE DES INFOS : SEXE ET ORIENTATION SEXUELLE ------------------------>
+            <div class="container">
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                          <div class="texte-boite-sexe">
+                              <h1>Sexe</h1>
+                              <p>Sélectionnez votre sexe:</p>
+                          </div>
+                          <div class="form-top-right">
+                              <i class="fa fa-venus-mars"></i>
+                          </div>
+                        </div>
+
+                        <div class="form-bot">
+                            <select id="select_sexe" class="form-control">
+                                <option value="sexe_neutre" style="display: none;" selected>Choisissez...</option>
+                                <option value="sexe_homme">Homme</option>
+                                <option value="sexe_femme">Femme</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1 middle-border-compte"></div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Orientation sexuelle</h1>
+                                <p>Sélectionnez votre orientation sexuelle, si rien n'est selectionné
+                                    , vous serez considéré comme bisexuel:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa fa-heart"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot">
+                                <select id="select_orientation" class="form-control">
+                                    <option value="orientation_bisexuel" selected>Choisissez...</option>
+                                    <option value="orientation_homme">Hétérosexuel</option>
+                                    <option value="orientation_femme">Homosexuel</option>
+                                    <option value="orientation_femme">Bisexuel</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+<!-- ____________________________________________________________________________________________________________ -->
+
+<!-- ----------------- LIGNE SEPARATRICE ------------------------>
+                <div class="row">
+                    <div class="col-sm-1 mid-border-compte"></div>
+                </div>
+<!-- _______________________________________________________ -->
+
+
+<!-- ----------------- 2ème PARTIE DES INFOS : BIO ET LISTE D INTERETS ------------------------>
+
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Bio</h1>
+                                <p>Faites une description de vous :</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-book"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot" style="height: 150px;">
+                            <textarea maxlength="255" style="height: 100px;" class="form-control bio_input" placeholder="Description de vous"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1 middle-border-compte"></div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Liste d'intérêts</h1>
+                                <p>Vos listes d'intérêts(Maximum 10). Exemple : bio geek</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-list"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot">
+                            <div class="tags-input" data-name="tags-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- ____________________________________________________________________________________________________________ -->
+
+<!-- ----------------- LIGNE SEPARATRICE ------------------------>
+                <div class="row">
+                    <div class="col-sm-1 mid-border-compte"></div>
+                </div>
+<!-- _______________________________________________________ -->
+
+
+<!-- ----------------- 3ème PARTIE DES INFOS : PHOTOS ------------------------>
+
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Photos</h1>
+                                <p>Modifiez vos photos:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-picture-o"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot">
+                            <input id="upload_img" class="form-control" type="file">
+                        </div>
+                        <div class="form-bottom">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                            <img src="../img/code.jpg" width="120" height="100">
+                        </div>
+                    </div>
+                    <div class="col-sm-1 middle-border-compte" style="min-height: 570px;"></div>
+                    <div class="col-sm-1"></div>
+
+
+<!-- _______________________________________________________________________ -->
+
+
+<!-- ----------------- 4ème PARTIE DES INFOS : INFOS DEJA PRESENTES ------------------------>
+
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Modifiez vos informations</h1>
+                                <p>Ici vous pouvez modifier vos informations:</p>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-info"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bottom">
+                            <input maxlength="20" id="pseudo" type="text" name="pseudo" placeholder="<%=session%> (Pseudo)" class="form-username form-control" id="pseudo">
+                            <span id="err_pseudo" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Ce pseudo est déjà utilisé</strong></span>
+                            <br>
+                            <input maxlength="40" id="prenom" type="text" name="prenom" placeholder="<%=prenom%> (Prénom)" class="form-first-name form-control" id="prenom">
+                            <br>
+                            <input maxlength="40" id="nom" type="text" name="nom" placeholder="<%=nom%> (Nom)" class="form-last-name form-control" id="nom">
+                            <br>
+                            <input maxlength="255" id="email" type="text" name="email" placeholder="<%=email%> (Email)" class="form-username form-control" id="mail">
+                            <span id="err_email" class="col-sm-offset-1 col-sm-11 text-danger" style="display: none;"><strong>Cette adresse mail est déjà utilisée</strong></span>
+                            <br>
+                            <p>Pour modifier ton mot de passe clique <a id="modif_mdp" style="cursor: pointer;">ici</a> </p>
+                            <div class="alert alert-success" style="display: none;" id="mail_succes">
+                                Une confirmation a été envoyée à votre adresse mail <%=email%>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button style="margin-bottom: 100px;" type="submit" id="submit" class="btn">Enregistrer</button>
+
+<!-- _______________________________________________________________________ -->
+
+
+            </div>
+
+<!-- ---------------------- FOOTER ---------------------->
+        <footer class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="footer-border">
+                        <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                            problème technique.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!-- ____________________________________________________ -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+
+            [].forEach.call(document.getElementsByClassName('tags-input'), function(el){
+                let hiddenInput = document.createElement('input'),
+                    mainInput = document.createElement('input'),
+                    tags_serv = <%-JSON.stringify(tags_server)%>;
+
+                var tags = [];
+
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', el.getAttribute('data-name'));
+                hiddenInput.setAttribute('id', 'tgs-input');
+
+                mainInput.setAttribute('maxlength', '20');
+                mainInput.setAttribute('type', 'text');
+                mainInput.setAttribute('placeholder', "Entrez vos tags ici");
+                mainInput.classList.add('main-input');
+                mainInput.addEventListener('keypress', function(e){
+                    if (e.keyCode == 13) {
+                        let enteredTags = mainInput.value;
+                        let filteredTag = filterTag(enteredTags);
+
+                        var same_tag = tags.filter(tag => tag.text === filteredTag);
+
+                        if (filteredTag.length > 0 && same_tag.length < 1 && tags.length < 10){
+                            addTag(filteredTag);
+                            mainInput.value = "";
+                        }
+                    }
+                });
+
+                el.appendChild(mainInput);
+                el.appendChild(hiddenInput);
+
+                if (tags_serv) {
+                    tags_db = tags_serv.split(',');
+                    tags_db.forEach(function (e) {
+                        addTag(e);
+                    });
+                }
+
+                function addTag(text) {
+                    let tag = {
+                        text: text,
+                        element: document.createElement('span')
+                    };
+                    tag.element.classList.add('tag');
+                    tag.element.textContent = tag.text;
+
+                    let closeBtn = document.createElement('span');
+                    closeBtn.classList.add('close');
+                    closeBtn.addEventListener('click', function(){
+                        removeTag(tags.indexOf(tag));
+                    });
+                    tag.element.appendChild(closeBtn);
+
+                    tags.push(tag);
+
+                    el.insertBefore(tag.element, mainInput);
+                    refreshTags();
+                }
+
+                function removeTag(index) {
+                    let tag = tags[index];
+                    tags.splice(index, 1);
+                    el.removeChild(tag.element);
+                    refreshTags();
+                }
+
+                function refreshTags() {
+                    let tagsList = [];
+                    tags.forEach(function(t) {
+                        tagsList.push(t.text);
+                    });
+                    hiddenInput.value = tagsList.join(',');
+                }
+
+                function filterTag(tag) {
+                    return tag.replace(/[^\w -]/g, '').trim().replace(/\W+/g, '-');
+                }
+            });
+
+            $('#submit').on('click', function(){
+                var sexe_select = $('#select_sexe').val();
+                var orientation_sexuelle = $('#select_orientation').val();
+                var bio = $('#bio').val();
+                var liste_interets = $('#tgs-input').val();
+                var upload_img = $('#upload_img').val();
+                var pseudo = $('#pseudo').val();
+                var prenom = $('#prenom').val();
+                var nom = $('#nom').val();
+                var email = $('#email').val();
+
+                if (email) {
+                    var extension = upload_img.substr( (upload_img.lastIndexOf('.') +1) )
+                    console.log(sexe_select + " - " + orientation_sexuelle + " - " + bio + " - " + liste_interets + " - " + extension + " - " + pseudo + " - " + prenom + " - " + nom + " - " + email);
+                }
+                socket.emit('liste_interets', {liste_interets});
+                return false;
+            });
+
+            $('#modif_mdp').on('click', function () {
+                $('#mail_succes').fadeIn('slow', function(){
+                    $('#mail_succes').delay(5000).fadeOut();
+                });
+                socket.emit('modif_mdp', "");
+            });
+
+            function emit_pseudo_same(pseudo) {
+                socket.emit('pseudo_same_vers_serveur', {pseudo});
+                var trkli = socket.on('pseudo_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        this.resulti = "1";
+                    }  else {
+                        this.resulti = "0";
+                    }
+                });
+                return trkli.resulti;
+            }
+
+            function emit_mail_same(mail) {
+                socket.emit('mail_same_vers_serveur', {mail});
+                var trkl = socket.on('mail_same_vers_client', function(rep){
+                    if (rep != "0"){
+                        this.result = "1";
+                    }  else {
+                        this.result = "0";
+                    }
+                });
+                return trkl.result;
+            }
+
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
+            var pseudo_key = function () {
+                var pseudo = $('#pseudo').val();
+                if (pseudo && pseudo.length > 4 && pseudo.length <= 20) {
+                    if (emit_pseudo_same(pseudo) == "1") {
+                        $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                        $('#err_pseudo').attr('style', '');
+                    }
+                    else {
+                        $('#pseudo').attr('style', 'border: 1.5px solid green;');
+                        $('#err_pseudo').attr('style', 'display: none;');
+                    }
+                }
+                else if (pseudo.length > 0) {
+                    $('#pseudo').attr('style', 'border: 1.5px solid red;');
+                    $('#err_pseudo').attr('style', 'display: none;');
+                }
+                else {
+                    $('#pseudo').attr('style', '');
+                    $('#err_pseudo').attr('style', 'display: none;');
+                }
+            }
+
+            $('#pseudo').keyup(pseudo_key)
+                .keypress(pseudo_key)
+                .blur(pseudo_key)
+                .change(pseudo_key)
+
+            var prenom_key = function () {
+                var prenom = $('#prenom').val();
+                if (prenom && prenom.length > 1 && prenom.length <= 40) {
+                    $('#prenom').attr('style', 'border: 1.5px solid green;');
+                }
+                else if (prenom.length > 0) {
+                    $('#prenom').attr('style', 'border: 1.5px solid red;');
+                }
+                else {
+                    $('#prenom').attr('style', '');
+                }
+            }
+            $('#prenom').keyup(prenom_key)
+                .keypress(prenom_key)
+                .blur(prenom_key)
+                .change(prenom_key)
+
+            var nom_key = function () {
+                var prenom = $('#nom').val();
+                if (prenom && prenom.length > 1 && prenom.length <= 40) {
+                    $('#nom').attr('style', 'border: 1.5px solid green;');
+                }
+                else if (prenom.length > 0) {
+                    $('#nom').attr('style', 'border: 1.5px solid red;');
+                }
+                else {
+                    $('#nom').attr('style', '');
+                }
+            }
+            $('#nom').keyup(nom_key)
+                .keypress(nom_key)
+                .blur(nom_key)
+                .change(nom_key)
+
+            var mail_key = function () {
+                var email = $('#email').val();
+                if (email && validateEmail(email)) {
+                    if (emit_mail_same(email) == "1") {
+                        $('#email').attr('style', 'border: 1.5px solid red;');
+                        $('#err_email').attr('style', '');
+                    }
+                    else {
+                        $('#email').attr('style', 'border: 1.5px solid green;');
+                        $('#err_email').attr('style', 'display: none;');
+                    }
+                }
+                else if (email.length > 0) {
+                    $('#email').attr('style', 'border: 1.5px solid red;');
+                    $('#err_email').attr('style', 'display: none;');
+                }
+                else {
+                    $('#email').attr('style', '');
+                    $('#err_email').attr('style', 'display: none;');
+                }
+            }
+            $('#email').keyup(mail_key)
+                .keypress(mail_key)
+                .blur(mail_key)
+                .change(mail_key)
+
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+    </body>
+</html>

@@ -1,0 +1,160 @@
+<html>
+<head>
+    <title>Petit thème</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/form.css" rel="stylesheet">
+    <link href="../css/compte.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ACCUEIL
+                <span class="glyphicon glyphicon-globe"></span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <% if (session) { %>
+                <li><a href="#">
+                        Mon profil
+                        <span class="glyphicon glyphicon-user"></span>
+                    </a></li>
+                <li><a href="/compte">
+                        Mon compte
+                        <span class="glyphicon glyphicon-wrench"></span>
+                    </a></li>
+                <li><a href="/deconnexion">
+                        Deconnexion
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a></li>
+                <% } else { %>
+                <li><a href="/connexion">
+                        Inscription / Connexion
+                        <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                    </a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container div-top">
+    <h1>Modification de mot de passe</h1>
+    <p><strong>Réinitialisation</strong> de mot de passe.</p>
+</div>
+
+<div class="row le_top">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <div class="form-top-sexe">
+            <div class="texte-boite-sexe">
+                <h1>Mot de passe</h1>
+            </div>
+            <div class="form-top-right">
+                <i class="fa fa-lock"></i>
+            </div>
+        </div>
+
+        <div class="form-bot"">
+            <div class="form-group">
+                <input type="password" maxlength="255" name="password1" placeholder="Ancien de mot de passe" class="form-email form-control" id="password1">
+            </div>
+            <div class="alert alert-danger" style="display: none;" id="pwd_danger">
+                Le mot de passe est incorrect.
+            </div>
+            <div class="alert alert-success" style="display: none;" id="pwd_success">
+                Le mot de passe est correct.
+            </div>
+            <div class="form-group">
+                <input type="password" maxlength="255" name="password2" placeholder="Nouveau mot de passe" class="form-email form-control" id="password2">
+            </div>
+            <div class="alert alert-danger" style="display: none;" id="pwd_danger2">
+                Le mot de passe n'est pas sécurisé.
+            </div>
+            <div class="alert alert-success" style="display: none;" id="pwd_success2">
+                Le mot de passe est sécurisé.
+            </div>
+            <button type="submit" id="submit" class="btn">Envoyer</button>
+        </div>
+    </div>
+</div>
+
+<footer class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="footer-border">
+                <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                    problème technique.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:8080');
+
+    function validatePw(pw) {
+        var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        return re.test(pw);
+    }
+
+    $("#submit").on('click', function () {
+        var pwd1 = $('#password1').val();
+        var pwd2 = $('#password2').val();
+        if (pwd1 && pwd1.length > 1 && pwd2 && pwd2.length > 1) {
+            socket.emit("verif_modif_mdp", {pwd1});
+        }
+    });
+    socket.on('m_mdp_serveur', function(rep){
+        var pwd2 = $('#password2').val();
+        if (rep != "0"){
+            $('#pwd_success').fadeIn('slow', function(){
+                $('#pwd_success').delay(2000).fadeOut();
+            });
+            if (validatePw(pwd2)){
+                $('#pwd_success2').fadeIn('slow', function(){
+                    $('#pwd_success2').delay(2000).fadeOut();
+                });
+                socket.emit("change_mdp_ok", {pwd2});
+            } else {
+                $('#pwd_danger2').fadeIn('slow', function(){
+                    $('#pwd_danger2').delay(2000).fadeOut();
+                });
+            }
+        }  else {
+            $('#pwd_danger').fadeIn('slow', function(){
+                $('#pwd_danger').delay(2000).fadeOut();
+            });
+        }
+    });
+
+    socket.on("redirect_change_mdp", function (destination) {
+        window.location.href = destination;
+    });
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+<script src="../js/scripts.js"></script>
+</body>
+</html>
