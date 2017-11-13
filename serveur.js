@@ -257,16 +257,6 @@ function arrayContains(needle, arrhaystack) {
     return (arrhaystack.indexOf(needle) > -1);
 }
 
-function getGeoloc() {
-    var requestify = require('requestify');
-    requestify.get('https://db-ip.com/81.57.53.204').then(function(response) {
-        response.getBody();
-        var patt = new RegExp("located in ([^,]+), ([^.]+) \\(see map\\)");
-        var res = patt.exec(response.body);
-        req.session.geoloc = "TEST42";
-    });
-}
-
 io.on('connection', function(socket){
     var socketList = io.sockets.server.eio.clients;
     var socketIds = Object.keys(socketList);
