@@ -17,7 +17,6 @@
     "latinize": "*",
     "mysql": "*",
     "nodemailer": "*",
-    "requestify": "*",
     "socket.io": "*",
     "xmlhttprequest": "*"
   },
