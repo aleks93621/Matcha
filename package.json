@@ -5,7 +5,6 @@
   "main": "serveur.js",
   "dependencies": {
     "bcrypt": "*",
-    "connect-redis": "*",
     "cookie-parser": "*",
     "ejs": "*",
     "ent": "*",
