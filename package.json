@@ -5,7 +5,6 @@
   "main": "serveur.js",
   "dependencies": {
     "bcrypt": "*",
-    "connect-redis": "*",
     "cookie-parser": "*",
     "ejs": "*",
     "ent": "*",
@@ -13,28 +12,15 @@
     "express-fileupload": "*",
     "express-session": "*",
     "express-socket.io-session": "*",
-    "facebook-node": "*",
-    "geoip-lite": "*",
-    "geoip2": "*",
-    "geolocation": "*",
     "geolocator": "*",
-    "google-geolocation": "*",
-    "google-map": "*",
-    "google-maps": "*",
     "hash": "*",
-    "iplocation": "*",
     "latinize": "*",
-    "multer": "*",
     "mysql": "*",
-    "node-where": "*",
     "nodemailer": "*",
-    "passport-facebook": "*",
     "requestify": "*",
-    "satelize": "*",
     "socket.io": "*",
     "xmlhttprequest": "*"
   },
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
