@@ -852,4 +852,8 @@ app.get('/reset_pwd/', urlencodedParser, function(req, res) {
   res.render('reset_pwd.ejs');
 });
 
+app.all('*', function(req, res) {
+    res.redirect("/");
+});
+
 http.listen(8080);
