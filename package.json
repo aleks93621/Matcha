@@ -1,0 +1,28 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "projet de site de rencontre",
+  "main": "serveur.js",
+  "dependencies": {
+    "bcrypt": "*",
+    "cookie-parser": "*",
+    "ejs": "*",
+    "ent": "*",
+    "express": "*",
+    "express-fileupload": "*",
+    "express-session": "*",
+    "express-socket.io-session": "*",
+    "geolocator": "*",
+    "hash": "*",
+    "latinize": "*",
+    "mysql": "*",
+    "nodemailer": "*",
+    "socket.io": "*",
+    "xmlhttprequest": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aaleksov arumpler",
+  "license": "ISC"
+}

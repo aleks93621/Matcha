@@ -1,0 +1,327 @@
+<html lang="fr">
+<head>
+    <title>Petit thème</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/form.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed"
+                      data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">ACCUEIL
+                  <span class="glyphicon glyphicon-globe"></span>
+              </a>
+              <a class="navbar-brand" href="/notifs">
+                  <span id="notif_logo" class="glyphicon glyphicon-fire"></span>
+              </a>
+              <a class="navbar-brand" href="/chat">
+                  <span id="mess_logo" class="glyphicon glyphicon-envelope"></span>
+              </a>
+          </div>
+          <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/compte">
+                      Mon profil
+                      <span class="glyphicon glyphicon-user"></span>
+                  </a></li>
+                  <li><a href="/post_deconnexion">
+                      Deconnexion
+                      <span class="glyphicon glyphicon-remove-circle"></span>
+                  </a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1 >Matcha</h1>
+                            <div class="description">
+                                <p>
+                                    Trouvez la personne qui vous correspond!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                      <form class="form-inline">
+                        <div class = "form-group">
+                          <select class="form-control" id="trier_par">
+                            <option value="" disabled selected>Trier par</option>
+                            <option>age</option>
+                            <option>age (desc)</option>
+                            <option>proximité</option>
+                            <option>score</option>
+                            <option>score (desc)</option>
+                            <option>tags communs</option>
+                          </select>
+                          <div class="form-group">
+                            <input placeholder="age min" type="number" id="age_min" style="width: 80px" min="18" max="100">
+                            <input placeholder="age max" type="number" id="age_max" style="width: 80px" min="18" max="100">
+                            <input placeholder="score min" type="number" id="score_min" style="width: 100px" min="0" max="100">
+                            <input placeholder="score max" type="number" id="score_max" style="width: 100px" min="0" max="100">
+                            <input placeholder="max km" type="number" id="loc" style="width: 80px" min="1" max="150">
+                            <input placeholder="tags communs" type="number" id="tags" style="width: 130px" min="0">
+                          </div>
+                        <button id="submit" type="submit" class="btn"><i class="fa fa-check"></i></button>
+                      </form>
+                    </div>
+
+                    <%
+
+
+                        var j = 0;
+                       data.forEach(function(elem){ %>
+
+                      <%if(j % 4 === 0){%>  <div class="row"> <%}%>
+                        <div class="col-sm-3">
+                            <div class="form-box">
+                                <div class="form-top">
+                                    <div class="form-top-left">
+                                        <a href="/profil/<%=elem.pseudo%>"><h3 style="font-weight: bold;text-shadow: 2px 2px black; color: white;"><%=elem.pseudo%></h3></a><h4 style="text-shadow: 2px 2px black; color: white;">score: <%=elem.score%>%</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="index-bottom">
+
+
+
+                              <img height="165px" width="198px" src=
+                                   <% if (pics.indexOf(elem.id) > -1) { %>
+                                   "/photos/<%=elem.id%>-1.jpg"
+                                   <% } else {%>
+                                    "/img/nopic.jpg"
+                                   <%}%> >
+
+                              </br>
+                              <p style="text-shadow: 2px 2px black; font-size: 20px"><%if(elem.age > 0){%><%=elem.age%> ans -<%}%> <%=elem.geoloc%></p>
+                              <p>
+                              <%if (elem.bio) {%>
+
+                                <%if (elem.bio.length > 25) {%>
+                                  <%=elem.bio.substring(0, 25)%><a href="/profil/<%=data[0].pseudo%>">[suite]</a>
+                                <% }
+                                else{ %>
+                                  <%=elem.bio%>
+                                <%}
+                                }%>
+                              </p>
+                              <div id="tags" class="form-group">
+                                  <%var i = 0;
+                                  if (elem.liste_interet) {
+                                         var tmp = elem.liste_interet.split(',');
+                                  tmp.forEach(function(tag){%>
+                                  <span class="label label-primary"><%=tmp[i]%></span>
+                                  <%i++; });}%>
+                              </div>
+                            </div>
+                        </div>
+
+                        <%if(j % 4 === 3){%></div> <%}%>
+
+                      <%j++;})%>
+                      <%if(j % 4 !== 0){%></div> <%}%>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="footer-border">
+                        <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                            problème technique.</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+
+            var socket = io.connect('http://localhost:8080');
+
+
+        </script>
+
+        <script>
+
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
+            $('#submit').on('click', function() {
+
+              var params = 0;
+              var url = '/?';
+              var sort = $('#trier_par').val();
+              var age_min = $('#age_min').val();
+              var age_max = $('#age_max').val();
+              var loc = $('#loc').val();
+              var score_min = $('#score_min').val();
+              var score_max = $('#score_max').val();
+              var tags = $('#tags').val();
+
+              if (sort) {
+                if (sort === "age") {
+                  url = url + "sort=age";
+                }
+                else if (sort === "age (desc)") {
+                  url = url + "sort=age&desc=1";
+                }
+                else if (sort === "proximité") {
+                  url = url + "sort=dist";
+                }
+                else if (sort === "score") {
+                  url = url + "sort=score";
+                }
+                else if (sort === "score (desc)") {
+                  url = url + "sort=score&desc=1";
+                }
+                else if (sort === "tags communs") {
+                  url = url + "sort=tags";
+                }
+                params++;
+              }
+              if(age_min || age_max) {
+                url = url + (params > 0 ? '&' : '') + "age=" + (age_min > 17 ? age_min : 18) + "_" + age_max;
+                params++;
+              }
+              if(loc) {
+                url = url + (params > 0 ? '&' : '') + "loc=" + loc;
+                params++;
+              }
+              if(score_min || score_max) {
+                url = url + (params > 0 ? '&' : '') + "pop=" + (score_min > 0 ? score_min : 0) + "_" + score_max;
+                params++;
+              }
+              if(tags > 0) {
+                url = url + (params > 0 ? '&' : '') + "tag=" + tags;
+                params++;
+              }
+
+              window.location = url ;
+              return false;
+            });
+            $('#age_min').on('blur',function(){
+              if ($(this).val() < 18 && $(this).val() > 0) {
+                $(this).val(18);
+              }
+              else if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 100) {
+                $(this).val(100);
+              }
+              if ($('#age_max').val() === '' || $(this).val() > $('#age_max').val()) {
+                $('#age_max').val(100);
+              }
+            });
+            $('#age_max').on('blur',function(){
+              if ($(this).val() < 18 && $(this).val() > 0) {
+                $(this).val(18);
+              }
+              else if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 100) {
+                $(this).val(100);
+              }
+              if ( !$('#age_min').val() || $(this).val() < $('#age_min').val()) {
+                $('#age_min').val(18);
+              }
+            });
+            $('#score_min').on('blur',function(){
+              if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 100) {
+                $(this).val(100);
+              }
+              if ($(this).val() > $('#score_max').val()) {
+                $('#score_max').val(100);
+              }
+            });
+            $('#score_max').on('blur',function(){
+              if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 100) {
+                $(this).val(100);
+              }
+              if ( !$('#score_min').val() || $(this).val() < $('#score_min').val()) {
+                $('#score_min').val(0);
+              }
+            });
+            $('#loc').on('blur',function(){
+              if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 150) {
+                $(this).val(150);
+              }
+            });
+            $('#tags').on('blur',function(){
+              if ($(this).val() <= 0) {
+                $(this).val('');
+              }
+              else if ($(this).val() > 100) {
+                $(this).val(100);
+              }
+            });
+
+            // GESTION NOTIFS
+            $(document).ready(function(){
+              socket.emit('check_notifs');
+            });
+            socket.on('test_notifs', function(id_user, type) {
+                socket.emit('retour_test_notifs', id_user, type);
+            });
+            socket.on('notif', function(type) {
+                if (type === 4) {
+                  $('#mess_logo').attr('style', 'color: darkred;')
+                }
+                else if (type === 22) {
+                  $('#notif_logo').attr('style', 'color: darkred;')
+                  $('#mess_logo').attr('style', 'color: darkred;')
+                }
+                else {
+                  $('#notif_logo').attr('style', 'color: darkred;')
+                }
+            });
+
+
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+</body>
+</html>

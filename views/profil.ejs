@@ -1,0 +1,266 @@
+<html>
+    <head>
+        <title>Profil - <%=data_visit[0].pseudo%></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet">
+        <link href="../css/form.css" rel="stylesheet">
+        <link href="../css/compte.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    </head>
+
+    <body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ACCUEIL
+                <span class="glyphicon glyphicon-globe"></span>
+            </a>
+            <a class="navbar-brand" href="/notifs">
+                <span id="notif_logo" class="glyphicon glyphicon-fire"></span>
+            </a>
+            <a class="navbar-brand" href="/chat">
+                <span id="mess_logo" class="glyphicon glyphicon-envelope"></span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/compte">
+                    Mon profil
+                    <span class="glyphicon glyphicon-user"></span>
+                </a></li>
+                <li><a href="/post_deconnexion">
+                    Deconnexion
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- ____________________________ -->
+
+<!-- HAUT DE LA DIV:"MON COMPTE" -->
+        <div class="container div-top">
+          <h1><i title="connecté pour la dernière fois le <%=data_visit[0].date_conn%>" class="fa fa-circle fa-1" style="font-size:20px; color: <% if (connected === 1){ %>green<%}else{%>darkred<%}%>;"></i> <strong><%=data_visit[0].pseudo%></strong> - <%= data_visit[0].score %>%</h1>
+            <%if (connected === 0){%><h6>dernière connexion le <%=data_visit[0].date_conn%></h6><%}%>
+            </br>
+            <% var count = 0;
+              pics.forEach(function(elem) {
+                if (elem.split('-')[0] == data_visit[0].id) { %>
+                  <img src="../photos/<%= elem %>" width="180" height="150"/>
+            <% }
+                else if (elem.split('-')[0] == data[0].id) {
+                  count++;
+                }
+              }); %>
+            </br>
+            </br>
+            <% if (count > 0) {
+               if (likes[0] && (likes[0].id_un === data_visit[0].id && likes[0].like_un === 2 || likes[0].id_deux === data_visit[0].id && likes[0].like_deux === 2)) {%>
+                <p style="text-shadow: 2px 2px black; font-size: 25px">Vous a bloqué </p>
+              <% }
+               else if (likes[0] && (likes[0].id_un === data[0].id && likes[0].like_un === 2 || likes[0].id_deux === data[0].id && likes[0].like_deux === 2)) {%>
+                <p style="text-shadow: 2px 2px black; font-size: 25px">Utilisateur bloqué </p>
+              <% }
+               else if (!likes[0]){ %>
+                 <button type="button" class="btn btn_action_like2" style="background-color: #337ab7;">Like</button>
+                 <% }
+               else if (likes[0].like_un === 1 && likes[0].like_deux === 1 ) {%>
+                  <p style="text-shadow: 2px 2px black; font-size: 25px">Vous avez matché !<i class="fa fa-heart" style="color: red;"></i></p>
+                  <button type="button" class="btn btn_action_unlike" style="background-color: #337ab7;">Unlike</button>
+                  <% }
+               else if (likes[0].id_un === data_visit[0].id && likes[0].like_un === 1 || likes[0].id_deux === data_visit[0].id && likes[0].like_deux === 1) {%>
+                  <p style="text-shadow: 2px 2px black; font-size: 25px">Vous a liké !<i class="fa fa-heart" style="color: red;"></i></p>
+                  <button type="button" class="btn btn_action_likeb" style="background-color: #337ab7;">Like</button>
+                  <% }
+               else if (likes[0].like_un === 0 && likes[0].like_deux === 0 ) {%>
+                  <button type="button" class="btn btn_action_like" style="background-color: #337ab7;">Like</button>
+                  <% }
+               else {%>
+                  <button type="button" class="btn btn_action_unlike" style="background-color: #337ab7;">Unlike</button>
+                  <% }
+             }
+             else { %>
+              <a type="button" class="btn" style="background-color: darkred; color: white;" href="/compte/">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Ajouter une photo avant de pouvoir liker</a>
+            <% } %>
+
+
+        </div>
+
+<!-- ____________________________ -->
+
+
+
+
+            <div id="modif_info" class="container">
+                <div class="row le_top">
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                          <div class="texte-boite-sexe">
+                              <h1>Informations</h1>
+                          </div>
+                          <div class="form-top-right">
+                              <i class="fa fa-venus-mars"></i>
+                          </div>
+                        </div>
+
+                        <div class="form-bot" style="height: auto;">
+                          <p><strong>pseudo: </strong><%=data_visit[0].pseudo%></p>
+                          <p><strong>prénom: </strong><%=data_visit[0].prenom%></p>
+                          <p><strong>nom: </strong><%=data_visit[0].nom%></p>
+                          <p><strong>localisation: </strong><%=data_visit[0].geoloc%></p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1 middle-border-compte"></div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-5">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Profil</h1>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa fa-heart"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot" style="height: auto;">
+                          <p><strong>age: </strong><%if(data_visit[0].age > 0){%><%=data_visit[0].age%><%}%></p>
+                          <p><strong>sexe: </strong><%if(data_visit[0].sexe !== 'neutre'){%><%=data_visit[0].sexe%><%}%></p>
+                          <p><strong>orientation: </strong><%=data_visit[0].orientation_sexuelle%></p>
+                          <%var i = 0;
+                          if (data_visit[0].liste_interet) {
+                                 var tmp = data_visit[0].liste_interet.split(',');
+                          tmp.forEach(function(elem){%>
+                          <span class="label label-primary"><%=tmp[i]%></span>
+                          <%i++; });}%>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1 mid-border-compte"></div>
+                </div>
+
+
+
+                <div class="row le_top">
+                    <div class="col-sm-12">
+                        <div class="form-top-sexe">
+                            <div class="texte-boite-sexe">
+                                <h1>Bio</h1>
+                            </div>
+                            <div class="form-top-right">
+                                <i class="fa fa-book"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-bot" style="height: auto;">
+                          <p><%=data_visit[0].bio%></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <button style="margin-bottom: 100px;" type="submit" id="bloquer" class="btn">Bloquer  <i id="checkblock" class="fa fa-check" style="display: none"></i><i class="fa fa-times" style="display: none"></i></button>
+                <button style="margin-bottom: 100px;" type="submit" id="reporter" class="btn">Reporter  <i id="checkreport" class="fa fa-check" style="display: none"></i><i class="fa fa-times" style="display: none"></i></button>
+
+            </div>
+            <div style="display: none;"><p id="id_un"><%= data[0].id %></p></div>
+            <div style="display: none;"><p id="id_deux"><%= data_visit[0].id %></p></div>
+
+<!-- ---------------------- FOOTER ---------------------->
+        <footer class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="footer-border">
+                        <p class="footer-text">Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                            problème technique.</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!-- ____________________________________________________ -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+        <script src="../js/scripts.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+            $(document).ready(function(){
+              socket.emit('notifs_io', $("#id_un").html(), $("#id_deux").html(), 2);
+            });
+            $(".btn_action_like2").on('click', function(){
+              socket.emit('add_like', $("#id_un").html(), $("#id_deux").html(), 1);
+              socket.emit('notifs_io', $("#id_un").html(), $("#id_deux").html(), 0);
+            });
+            $(".btn_action_likeb").on('click', function(){
+              socket.emit('update_like', $("#id_un").html(), $("#id_deux").html(), 1);
+              socket.emit('notifs_io', $("#id_un").html(), $("#id_deux").html(), 1);
+            });
+            $(".btn_action_like").on('click', function(){
+              socket.emit('update_like', $("#id_un").html(), $("#id_deux").html(), 1);
+              socket.emit('notifs_io', $("#id_un").html(), $("#id_deux").html(), 0);
+            });
+            $(".btn_action_unlike").on('click', function(){
+              socket.emit('update_like', $("#id_un").html(), $("#id_deux").html(), 0);
+              socket.emit('notifs_io', $("#id_un").html(), $("#id_deux").html(), 3);
+            });
+            socket.on('re-like', function(val){
+              socket.emit('update_like', $("#id_un").html(), $("#id_deux").html(), val);
+            });
+            socket.on('liked', function(){
+              location.reload();
+            });
+            $("#bloquer").on('click', function(){
+              socket.emit('add_like', $("#id_un").html(), $("#id_deux").html(), 2);
+              $("#checkblock").attr("style", "color: lightgreen;");
+              location.reload();
+            });
+            $("#reporter").on('click', function(){
+              socket.emit('report', $("#id_deux").html());
+              $("#checkreport").attr("style", "color: lightgreen;");
+            });
+
+            // GESTION NOTIFS
+            $(document).ready(function(){
+              socket.emit('check_notifs');
+            });
+            socket.on('test_notifs', function(id_user, type) {
+                socket.emit('retour_test_notifs', id_user, type);
+            });
+            socket.on('notif', function(type) {
+                if (type === 4) {
+                  $('#mess_logo').attr('style', 'color: darkred;')
+                }
+                else if (type === 22) {
+                  $('#notif_logo').attr('style', 'color: darkred;')
+                  $('#mess_logo').attr('style', 'color: darkred;')
+                }
+                else {
+                  $('#notif_logo').attr('style', 'color: darkred;')
+                }
+            });
+
+        </script>
+    </body>
+</html>
