@@ -1,0 +1,43 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "projet de site de rencontre",
+  "main": "serveur.js",
+  "dependencies": {
+    "bcrypt": "*",
+    "connect-redis": "*",
+    "cookie-parser": "*",
+    "ejs": "*",
+    "ent": "*",
+    "express": "*",
+    "express-fileupload": "*",
+    "express-session": "*",
+    "express-socket.io-session": "*",
+    "facebook-node": "*",
+    "geoip-lite": "*",
+    "geoip2": "*",
+    "geolocation": "*",
+    "geolocator": "*",
+    "google-geolocation": "*",
+    "google-map": "*",
+    "google-maps": "*",
+    "hash": "*",
+    "iplocation": "*",
+    "latinize": "*",
+    "multer": "*",
+    "mysql": "*",
+    "node-where": "*",
+    "nodemailer": "*",
+    "passport-facebook": "*",
+    "requestify": "*",
+    "satelize": "*",
+    "socket.io": "*",
+    "xmlhttprequest": "*"
+  },
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aaleksov arumpler",
+  "license": "ISC"
+}
