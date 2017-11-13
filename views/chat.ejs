@@ -1,0 +1,208 @@
+<html lang="fr">
+<head>
+    <title>Messages</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <script src="../js/scripts.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed"
+                      data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">ACCUEIL
+                  <span class="glyphicon glyphicon-globe"></span>
+              </a>
+              <a class="navbar-brand" href="/notifs">
+                  <span id="notif_logo" class="glyphicon glyphicon-fire"></span>
+              </a>
+              <a class="navbar-brand" href="/chat">
+                  <span id="mess_logo" class="glyphicon glyphicon-envelope"></span>
+              </a>
+          </div>
+          <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/compte">
+                      Mon profil
+                      <span class="glyphicon glyphicon-user"></span>
+                  </a></li>
+                  <li><a href="/post_deconnexion">
+                      Deconnexion
+                      <span class="glyphicon glyphicon-remove-circle"></span>
+                  </a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+<div class="container-fluid notifs">
+    </br>
+    <h1>Chat</h1>
+    </br>
+    <div class="row">
+        <nav class="col-sm-3">
+            <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+                <% var i = 0;
+                tab.forEach(function(match) {
+                    testVu = 1;
+                    mess.forEach(function(test) {
+                        if (test.vu === 0 && test.pseudo === match[0]) {
+                            testVu = 0;
+                        }
+                    })
+                %>
+                <li <% if (i < 1) {%>class="active"<% } %> ><a href="" <% if (testVu === 0) {%>style="color:darkred"<% } %> ><%= match[0] %></a>
+                </li>
+                <p style="display:none;"><%= match[1]%></p>
+<%
+
+                i += 1;
+                }) %>
+            </ul>
+        </nav>
+        <div id="chat-message" class="col-sm-8 chat-message">
+            <% var j = 0;
+            tab.forEach(function(match){ %>
+            <div id= <%= match[0] %> class="col-sm-12 <%if (j > 0) { %>hidden<% } %> " name="messboxaff" style="text-align: left">
+                <% mess.forEach(function(elem){ %>
+                <p>
+                   <%if (elem.test == match[0]) { %>
+                    <%=elem.pseudo%>: <%=elem.content%>
+                    <% } %>
+                </p>
+                <% }) %>
+            </div>
+            <% j += 1;
+            })
+            %>
+        </div>
+        <div id="submit" class="col-sm-8 col-sm-offset-3 input-group">
+            <form>
+                <div class="input-group">
+                    <input id="messagepost" type="text" class="form-control" style="height: 35px">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" style="height: 35px">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<footer class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="footer-border">
+                <p>Contactez nous sur <strong>matcha@assistance.fr</strong> si vous rencontrez un
+                    problème technique.</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div style="display: none;"><p id="id_user_db"><%= id_user %></p></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:8080');
+    var tmp = window.location.href;
+    var url = new URL(tmp);
+
+    $(function() {
+        var chatbox = $('#chat-message');
+        var height = chatbox[0].scrollHeight;
+        chatbox.scrollTop(height);
+    });
+    $('li').on('click', function() {
+        $('li[class="active"]').removeClass();
+        $(this).addClass("active");
+        $(this).children().removeAttr("style");
+        $('div[name="messboxaff"][class!="col-sm-12 hidden"]').addClass("hidden");
+        $('#'+$(this).text()).removeClass("hidden");
+        var chatbox = $('#chat-message');
+        var height = chatbox[0].scrollHeight;
+        chatbox.scrollTop(height);
+        var dest = $('li[class="active"]').text().trim();
+        socket.emit('read_message', dest);
+        return false;
+    });
+
+    $(document).on('submit',function(){
+        var mess = $('#messagepost').val();
+        $('#messagepost').val('');
+        var dest = $('li[class="active"]').text().trim();
+        var dest_id = $('li[class="active"]').next().text();
+        if (mess !== '') {
+            socket.emit('new_message', mess, dest);
+            socket.emit('notifs_io', $("#id_user_db").html(), dest_id, 4);
+        }
+        return false;
+    })
+
+    socket.on('test_message', function(user, dest, mess) {
+        socket.emit('retour_test', user, dest, mess);
+    });
+    socket.on('own_message', function(user, dest, message) {
+        $('#'+dest).append("<p>"+user+": "+message+"</p>");
+        var chatbox = $('#chat-message');
+        var height = chatbox[0].scrollHeight;
+        chatbox.scrollTop(height);
+    });
+    socket.on('message', function(user, message) {
+        $('#'+user).append("<p>"+user+": "+message+"</p>");
+        if($('#section3[class!="col-sm-12 hidden"]').text() == '') {
+            $('a:contains("' + user + '")').attr("style", "color:darkred");
+        }
+        var chatbox = $('#chat-message');
+        var height = chatbox[0].scrollHeight;
+        chatbox.scrollTop(height);
+    });
+
+
+
+
+    // GESTION NOTIFS
+    $(document).ready(function(){
+      socket.emit('check_notifs');
+    });
+    socket.on('test_notifs', function(id_user, type) {
+        socket.emit('retour_test_notifs', id_user, type);
+    });
+    socket.on('notif', function(type) {
+        if (type === 4) {
+          $('#mess_logo').attr('style', 'color: darkred;')
+        }
+        else if (type === 22) {
+          $('#notif_logo').attr('style', 'color: darkred;')
+          $('#mess_logo').attr('style', 'color: darkred;')
+        }
+        else {
+          $('#notif_logo').attr('style', 'color: darkred;')
+        }
+    });
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
